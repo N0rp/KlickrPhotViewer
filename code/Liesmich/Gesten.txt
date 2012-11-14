@@ -1,0 +1,11 @@
+Es gibt 6 Gesten im Programm, jeweils zwei in x,y und z-Richtung (genannt +x, -x, +y, -y, +z, -z). In dem Versuch das versehentliche Auslösen dieser Gesten zu unterbinden wurde die Art die Gesten auszulösen eingeschränkt. 
+
+Die x-Gesten sind am Beste auszulösen durch einen Handwisch in horizontaler Richtung von einer Bildschirmseite zur Anderen. Dieser Wisch sollte Ruckartig und schnell erfolgen. Von links nach rechts heißt diese Geste +x von rechts nach links -x. Den gleichen Effekt hat das Verschieben des roten 'Move'-Buttons, falls dieser aktiviert und sichtbar ist.
+
+Die y-Geste löst man am Besten aus in dem man die Hand vor den Körper hällt und ruckartig und schnell nach oben (+x) oder nach unten (-y) zieht. Mit dieser Geste kann zwischen maximierten Bildern gewechselt werden. Falls alle Bilder minimiert sind kann mit der y-Geste zwischen den Flickrseiten für diesen Tag gewechselt werden.
+
+Die z-Geste löst man durch ruckartiges drücken (+z) oder ziehen (-z) aus. Damit lassen sich Bilder minimieren respektive maximieren. Während man ein Bild mit einer Hand fokusiert kann man so auch die andere Hand nutzen und durch eine -z Geste das Bild maximieren. 
+
+Ohne Gesten kann man Bilder maximieren in dem man über ein Bild fährt kurz die Hand nach vorne streckt (das Bild wird fokusiert und in der z-Achse nach hinten gedrückt) und dann in beliebigen Tempo die Hand nach hinten zieht. Minimieren erfolgt immer über die +z Geste.
+
+Falls gewünscht lässt sich Head-Tracking in der KinectScript.js Datei über eine Flag am Anfang deaktivieren.

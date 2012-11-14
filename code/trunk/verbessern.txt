@@ -1,0 +1,21 @@
+﻿
+- Bilder vergroessern, indem man sie in die Mitte zieht, wo ein grosses freies Feld wartet
+- Bilder des selben Autors werden links angezeigt, related Bilder rechts
+	--man kann diese Bilder dann auswaehlen indem man sie von links nach rechts rueber zieht
+- Kopfschutteln/Kopfnicken Geste
+- Gesten deaktivieren mit einer Geste? Haende zusammenbringen o.a.
+- Gesten in einem GestenObject speichern, Objekte generell in JS?
+	--Gesten haben noch einen maxAcc-Operator; dieser soll anzeigen, wenn ruckartig Beschleunigt wurde
+		---Gestenerkennung von Gestenaktionen trennen
+			---- Richtung der Gesten seperat angeben und nicht in der Geschwindigkeit/Distanz verankern
+
+- z- Geste auf grosses Bild macht daraus full-screen?
+- zweiHaende Bildmanipulation fuer maximierte Bilder (rotation und skalierung des Bildes, aber wie?)
+- clearGestureStorage sollte nicht vom Gestenerkenner ausgeloest werden. Dieser gibt nur! die aktuelle Geste aus
+
+
+- Anpassen der x/y-Position der Haende, so dass sie den gesamten Raum ausfuellen
+- Handbaelle die zu nah am Koerper sind werden grau angezeigt
+	- Haende nahe am Koerper fuehren zu keiner Intereaktion
+- zweite Hand kann wieder zum maximieren des ausgewaehlten Bildes genutzt werden: i.e. allow_left/right bezieht sich nur auf x,y Gesten
+	

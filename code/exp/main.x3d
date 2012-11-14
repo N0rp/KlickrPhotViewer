@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE X3D PUBLIC "ISO//Web3D//DTD X3D 3.0//EN" "http://www.web3d.org/specifications/x3d-3.0.dtd">
+<X3D xmlns:xsd='http://www.w3.org/2001/XMLSchema-instance' profile='Full' version='3.0' xsd:noNamespaceSchemaLocation='http://www.web3d.org/specifications/x3d-3.0.xsd'>
+
+  <Engine>
+    <RenderJob>
+      <WindowGroup>
+        <Window size='640 400'/>
+      </WindowGroup>
+    </RenderJob>
+  </Engine>
+
+  <Scene DEF='scene'>
+  
+    <Viewpoint position='0 2 27' />
+    
+    <NavigationInfo type='none' />
+    <GradientBackground position='0 1' color='0 0.329 0.705.5  0 0.008 0.082'/>
+    
+    <TimeSensor DEF='timer_a' loop='true' cycleInterval='5' />
+    <TimeSensor DEF='timer_b' loop='true' cycleInterval='5' />
+    
+    <Viewpoint position='0 0 30' />
+    
+    <!-- Text -->
+    <Transform translation='-5 10 0'>
+      <Shape>
+        <PixelText DEF='headline' />
+        <Appearance>
+          <Material emissiveColor='1 1 1' />
+        </Appearance>
+      </Shape>
+      <Shape>
+        <PixelText DEF='timer_a_output' />
+        <Appearance>
+          <Material emissiveColor='1 0 0' />
+        </Appearance>
+      </Shape>
+      <Shape>
+        <PixelText DEF='timer_b_output' />
+        <Appearance>
+          <Material emissiveColor='0 1 0' />
+        </Appearance>
+      </Shape>
+    </Transform>
+    
+    <!-- Clock -->
+    <Transform translation='-10 4 0' >
+      <Transform DEF='timer_clock_a'>
+        <Transform translation='0 2 0'>
+          <Shape>
+            <Box size='0.1 4 0.1' />
+            <Appearance>
+              <Material emissiveColor='1 0 0' />
+            </Appearance>
+          </Shape>
+        </Transform>
+      </Transform>
+      <Transform DEF='timer_clock_b' >
+        <Transform translation='0 2 0'>
+          <Shape>
+            <Box size='0.1 3 0.1' />
+            <Appearance>
+              <Material emissiveColor='0 1 0' />
+            </Appearance>
+          </Shape>
+        </Transform>
+      </Transform>
+    </Transform>
+    
+    <!-- Controls -->
+    <Transform translation='0 -5 0'>
+      <Transform translation='-13 0 0'>
+      
+        <Transform translation='0 -2 0'>
+          <Shape>
+            <PixelText string='enable loop'>
+              <FontStyle DEF='font_type' family='SANS' size='1' justify='MIDDLE'/>
+            </PixelText>
+            <Appearance DEF='white_text' >
+              <Material diffuseColor='0 0 0' />
+            </Appearance>
+          </Shape>
+          <Transform translation='0 0.25 0' DEF='text_background'>
+            <Shape>
+              <Appearance>
+                <Material diffuseColor='1 1 1' />
+              </Appearance>
+              <Rectangle2D size='5 1.3' />
+            </Shape>
+          </Transform>
+          <TouchSensor DEF='enableLoop' />
+          
+          <Transform translation='5.5  0 0'>
+            <Shape>
+              <PixelText string='disable loop'>
+                <FontStyle USE='font_type' />
+              </PixelText>
+              <Appearance USE='white_text' />
+            </Shape>
+            <Transform USE='text_background' />
+            <TouchSensor DEF='disableLoop' />
+          </Transform>
+        </Transform>
+        
+        <Transform translation='0 0 0'>
+          <Shape>
+            <PixelText string='enable' >
+              <FontStyle USE='font_type' />
+            </PixelText>
+            <Appearance USE='white_text' />
+          </Shape>
+          <Transform USE='text_background' />
+          <TouchSensor DEF='enableTimer' />
+          
+          <Transform translation='5.5  0 0'>
+            <Shape>
+              <PixelText string='disable' >
+                <FontStyle USE='font_type' />
+              </PixelText>
+              <Appearance USE='white_text' />
+            </Shape>
+            <Transform USE='text_background' />
+            <TouchSensor DEF='disableTimer' />
+            
+            <Transform translation='5.5  0 0'>
+              <Shape>
+                <PixelText string='startTime' >
+                  <FontStyle USE='font_type' />
+                </PixelText>
+                <Appearance USE='white_text' />
+              </Shape>
+              <Transform USE='text_background' />
+              <TouchSensor DEF='startTime' />
+              
+              <Transform translation='5.5  0 0'>
+                <Shape>
+                  <PixelText string='stopTime' >
+                    <FontStyle USE='font_type' />
+                  </PixelText>
+                  <Appearance USE='white_text' />
+                </Shape>
+                <Transform USE='text_background' />
+                <TouchSensor DEF='stopTime' />
+                
+                <Transform translation='5.5  0 0'>
+                  <Shape>
+                    <PixelText string='pauseTime' >
+                      <FontStyle USE='font_type' />
+                    </PixelText>
+                    <Appearance USE='white_text' />
+                  </Shape>
+                  <Transform USE='text_background' />
+                  <TouchSensor DEF='pauseTime' />
+                  
+                  <Transform translation='5.5  0 0'>
+                    <Shape>
+                      <PixelText string='resumeTime' >
+                        <FontStyle USE='font_type' />
+                      </PixelText>
+                      <Appearance USE='white_text' />
+                    </Shape>
+                    <Transform USE='text_background' />
+                    <TouchSensor DEF='resumeTime' />
+                    
+                  </Transform>
+                </Transform>
+              </Transform>
+            </Transform>
+          </Transform>
+        </Transform>
+      </Transform>
+    </Transform>
+  
+    <Script DEF='script'>
+      <field accessType='initializeOnly' name='timer' type='SFNode' ><TimeSensor USE='timer_b' /> </field>
+      
+      <field accessType='inputOnly' name='enableTimer' type='SFTime' />
+      <field accessType='inputOnly' name='disableTimer' type='SFTime' />
+      <field accessType='inputOnly' name='enableLoop' type='SFTime' />
+      <field accessType='inputOnly' name='disableLoop' type='SFTime' />
+      
+      <field accessType='inputOnly' name='isActive' type='SFBool' />
+      <field accessType='inputOnly' name='isPaused' type='SFBool' />
+      
+      <field accessType='inputOnly' name='time_a' type='SFTime' />
+      <field accessType='inputOnly' name='time_b' type='SFTime' />
+      <field accessType='inputOnly' name='fraction_changed_a' type='SFFloat' />
+      <field accessType='inputOnly' name='fraction_changed_b' type='SFFloat' />
+      <field accessType='inputOnly' name='cycleTime_a' type='SFTime' />
+      <field accessType='inputOnly' name='cycleTime_b' type='SFTime' />
+      <field accessType='inputOnly' name='elapsedTime_a' type='SFTime' />
+      <field accessType='inputOnly' name='elapsedTime_b' type='SFTime' />
+      
+      <field accessType='outputOnly' name='headline' type='MFString' />
+      <field accessType='outputOnly' name='timer_a_output' type='MFString' />
+      <field accessType='outputOnly' name='timer_b_output' type='MFString' />
+      
+      <field accessType='outputOnly' name='timer_clock_a' type='SFRotation' />
+      <field accessType='outputOnly' name='timer_clock_b' type='SFRotation' />
+      
+      <![CDATA[ecmascript:
+      
+        var time_a;
+        var time_b;
+        var fraction_changed_a;
+        var fraction_changed_b;
+        var cycleTime_a;
+        var cycleTime_b;
+        var elapsedTime_a;
+        var elapsedTime_b;
+        
+        var pi = 3.14159265;
+        
+        function print_output()
+        {
+          headline[0]         = "Time";
+          timer_a_output[1]   = time_a;
+          timer_b_output[2]   = time_b;
+          
+          headline[3]         = "Fraction";
+          timer_a_output[4]   = fraction_changed_a;
+          timer_b_output[5]   = fraction_changed_b;
+          
+          headline[6]         = "Cycle";
+          timer_a_output[7]   = cycleTime_a;
+          timer_b_output[8]   = cycleTime_b;
+          
+          headline[9]         = "Elapsed";
+          timer_a_output[10]  = elapsedTime_a;
+          timer_b_output[11]  = elapsedTime_b;
+          
+          timer_clock_a = SFRotation(0,0,-1, fraction_changed_a * pi * 2);
+          timer_clock_b = SFRotation(0,0,-1, fraction_changed_b * pi * 2);
+          
+          // Browser.println(time_b + " - " + fraction_changed_b + " " + cycleTime_b);
+        }
+        
+        function time_a(fraction)
+        {
+          time_a = fraction;
+          print_output();
+        }
+        function time_b(fraction)
+        {
+          // Browser.println("Time:" + fraction);
+          time_b = fraction;
+        }
+        
+        function fraction_changed_a(fraction)
+        {
+          fraction_changed_a = fraction;
+        }
+        function fraction_changed_b(fraction)
+        {
+          // Browser.println("Fraction: " + fraction);
+          fraction_changed_b = fraction;
+        }
+        
+        function cycleTime_a(fraction)
+        {
+          cycleTime_a = fraction;
+        }
+        function cycleTime_b(fraction)
+        {
+          Browser.println("Cycle: " + fraction);
+          cycleTime_b = fraction;
+        }
+        
+        function elapsedTime_a(fraction)
+        {
+          elapsedTime_a = fraction;
+        }
+        function elapsedTime_b(fraction)
+        {
+          // Browser.println("Elapsed: " + fraction);
+          elapsedTime_b = fraction;
+        }
+        
+        function enableTimer(fraction)
+        {
+          Browser.println("Enabled = TRUE");
+          timer.enabled = true;
+        }
+        function disableTimer(fraction)
+        {
+          Browser.println("Enabled = FALSE");
+          timer.enabled = false;
+        }
+        
+        function enableLoop(fraction)
+        {
+          Browser.println("Loop = TRUE");
+          timer.loop = true;
+        }
+        function disableLoop(fraction)
+        {
+          Browser.println("Loop = FALSE");
+          timer.loop = false;
+        }
+        
+        function isActive(trigger)
+        {
+          Browser.println("isActive = " + trigger);
+        }
+        function isPaused(trigger)
+        {
+          Browser.println("isPaused = " + trigger);
+        }
+      
+      ]]>
+      
+    </Script>
+    
+    <ROUTE fromNode='timer_a' fromField='time' toNode='script' toField='time_a' />
+    <ROUTE fromNode='timer_b' fromField='time' toNode='script' toField='time_b' />
+    <ROUTE fromNode='timer_a' fromField='fraction_changed' toNode='script' toField='fraction_changed_a' />
+    <ROUTE fromNode='timer_b' fromField='fraction_changed' toNode='script' toField='fraction_changed_b' />
+    <ROUTE fromNode='timer_a' fromField='cycleTime' toNode='script' toField='cycleTime_a' />
+    <ROUTE fromNode='timer_b' fromField='cycleTime' toNode='script' toField='cycleTime_b' />
+    <ROUTE fromNode='timer_a' fromField='elapsedTime' toNode='script' toField='elapsedTime_a' />
+    <ROUTE fromNode='timer_b' fromField='elapsedTime' toNode='script' toField='elapsedTime_b' />
+    
+    <ROUTE fromNode='script' fromField='headline' toNode='headline' toField='string' />
+    <ROUTE fromNode='script' fromField='timer_a_output' toNode='timer_a_output' toField='string' />
+    <ROUTE fromNode='script' fromField='timer_b_output' toNode='timer_b_output' toField='string' />
+    
+    <ROUTE fromNode='script' fromField='timer_clock_a' toNode='timer_clock_a' toField='rotation' />
+    <ROUTE fromNode='script' fromField='timer_clock_b' toNode='timer_clock_b' toField='rotation' />
+    
+    <ROUTE fromNode='enableTimer'      fromField='touchTime' toNode='script'  toField='enableTimer' />
+    <ROUTE fromNode='disableTimer'     fromField='touchTime' toNode='script'  toField='disableTimer' />
+    <ROUTE fromNode='enableLoop'       fromField='touchTime' toNode='script'  toField='enableLoop' />
+    <ROUTE fromNode='disableLoop'      fromField='touchTime' toNode='script'  toField='disableLoop' />
+    
+    <ROUTE fromNode='timer_b'      fromField='isActive' toNode='script'  toField='isActive' />
+    <ROUTE fromNode='timer_b'      fromField='isPaused'  toNode='script' toField='isPaused' />
+    
+    <ROUTE fromNode='startTime'   fromField='touchTime' toNode='timer_b' toField='startTime' />
+    <ROUTE fromNode='stopTime'    fromField='touchTime' toNode='timer_b' toField='stopTime' />
+    <ROUTE fromNode='pauseTime'   fromField='touchTime' toNode='timer_b' toField='pauseTime' />
+    <ROUTE fromNode='resumeTime'  fromField='touchTime' toNode='timer_b' toField='resumeTime' />
+    
+  </Scene>
+</X3D>

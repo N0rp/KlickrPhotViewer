@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE X3D PUBLIC "ISO//Web3D//DTD X3D 3.0//EN" "http://www.web3d.org/specifications/x3d-3.0.dtd">
+<X3D xmlns:xsd='http://www.w3.org/2001/XMLSchema-instance' profile='Full' version='3.0' xsd:noNamespaceSchemaLocation='http://www.web3d.org/specifications/x3d-3.0.xsd'>
+    <Scene>
+
+        <Transform translation='-1 0 1'>
+            <PointLight DEF='pl1' showProxyGeometry='true' color='1 0 0' intensity='.2'/>
+        </Transform>
+        <Transform translation='1 0 1'>
+            <PointLight DEF='pl2' showProxyGeometry='true' color='0 1 0' intensity='.2'/>
+        </Transform>
+        <Transform translation='0 1 1'>
+            <PointLight DEF='pl3' showProxyGeometry='true' color='0 0 1' intensity='.2'/>
+        </Transform>
+        <Transform translation='0 -1 1'>
+            <PointLight DEF='pl4' showProxyGeometry='true' color='1 1 0' intensity='.2'/>
+        </Transform>
+        <Transform translation="0 0 -1">
+            <Shape>
+                <Rectangle2D/>
+                <Appearance>
+                    <Material diffuseColor="1 0 1"/>
+                </Appearance>
+            </Shape>
+        </Transform>
+        <Transform translation="0 0 0">
+            <Shape>
+                <IndexedFaceSet coordIndex="0 1 2 0 2 3">
+                    <Coordinate point="-.5 -.5 0 .5 -.5 0 .5 .5 0 -.5 .5 0"/>
+                    <MultiTextureCoordinate>
+                        <TextureCoordinate3D point="0 0 0, 1 0 0, 1 1 0, 0 1 0"/>
+                        <TextureCoordinate3D point="1 0 0, 1 0 0, 1 0 0, 1 0 0"/>
+                        <TextureCoordinate3D point="0 1 0, 0 1 0, 0 1 0, 0 1 0"/>
+                    </MultiTextureCoordinate>
+                </IndexedFaceSet>
+                <Appearance>
+                    <CommonSurfaceShader DEF="Shader"
+                        diffuseFactor = "1 1 1"
+                        >
+                        <ImageTexture containerField="normalTexture" url="data/normal_test.tga"/>
+                        
+                        <SurfaceShaderTexture containerField="diffuseTexture">
+                          <ImageTexture DEF="DiffTex" url="data/checker.png"/>
+                          <TextureTransform DEF="TexTransform" scale="1 1"/>
+                        </SurfaceShaderTexture>
+
+                    </CommonSurfaceShader>
+
+                </Appearance>
+            </Shape>
+        </Transform>
+
+        <KeySensor DEF='ks'/>
+        <Script DEF='s1'>
+          <field accessType='inputOnly' name='keyIn' type='SFString'/>
+          <field accessType='outputOnly' name='pl1On' type='SFBool'/>
+          <field accessType='outputOnly' name='pl2On' type='SFBool'/>
+          <field accessType='outputOnly' name='pl3On' type='SFBool'/>
+          <field accessType='outputOnly' name='pl4On' type='SFBool'/>
+          <field accessType='outputOnly' name='pl4On' type='SFBool'/>
+          <field accessType='outputOnly' name='scaleOut' type='SFVec2f'/>
+          <field accessType='outputOnly' name='diffTexOut' type='SFString'/>
+          <field accessType='outputOnly' name='alphaOut' type='SFFloat'/>
+          <![CDATA[javascript:
+            var light1=true;
+            var light2=true;
+            var light3=true;
+            var light4=true;
+            var scale = 1;
+            var diffTex = true;
+            var trans = false;
+            function keyIn(val) {
+                if (val=='1') {
+                    light1 = !light1;
+                    pl1On = light1;
+                }
+                if (val=='2') {
+                    light2 = !light2;
+                    pl2On = light2;
+                }
+                if (val=='3') {
+                    light3 = !light3;
+                    pl3On = light3;
+                }
+                if (val=='4') {
+                    light4 = !light4;
+                    pl4On = light4;
+                }
+                if (val=='5') {
+                    scale = scale+1;
+                    scaleOut = new SFVec2f(scale,scale);
+                }
+                if (val=='6') {
+                    diffTex = !diffTex;
+                    if(diffTex)
+                        diffTexOut = "data/checker.png";
+                    else
+                        diffTexOut = "data/blue_checker.png";
+                }
+                if (val=='7') {
+                    trans = !trans;
+                    if(trans)
+                        alphaOut = 0.5;
+                    else
+                        alphaOut = 1.0;
+                }
+            }
+        ]]>
+        </Script>
+        <ROUTE fromNode='ks' fromField='keyPress' toNode='s1' toField='keyIn'/>
+        <ROUTE fromNode='s1' fromField='pl1On' toNode='pl1' toField='set_on'/>
+        <ROUTE fromNode='s1' fromField='pl2On' toNode='pl2' toField='set_on'/>
+        <ROUTE fromNode='s1' fromField='pl3On' toNode='pl3' toField='set_on'/>
+        <ROUTE fromNode='s1' fromField='pl4On' toNode='pl4' toField='set_on'/>
+        <ROUTE fromNode='s1' fromField='scaleOut' toNode='TexTransform' toField='scale'/>
+        <ROUTE fromNode='s1' fromField='diffTexOut' toNode='DiffTex' toField='url'/>
+        <ROUTE fromNode='s1' fromField='alphaOut' toNode='Shader' toField='alphaFactor'/>
+
+    </Scene>
+</X3D>

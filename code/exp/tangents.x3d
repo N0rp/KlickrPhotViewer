@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE X3D PUBLIC "ISO//Web3D//DTD X3D 3.0//EN" "http://www.web3d.org/specifications/x3d-3.0.dtd">
+<X3D xmlns:xsd='http://www.w3.org/2001/XMLSchema-instance' profile='Full' version='3.0' xsd:noNamespaceSchemaLocation='http://www.web3d.org/specifications/x3d-3.0.xsd'>
+    <Scene>
+        <!-- both tangents -->
+        <Transform translation="0 0 0">
+			<Shape>
+				<IndexedFaceSet coordIndex="0 1 2 0 2 3">
+					<Coordinate point="-.5 -.5 0, .5 -.5 0, .5 .5 0, -.5 .5 0"/>
+					<MultiTextureCoordinate>
+						<TextureCoordinate3D point="0 0 0, 1 0 0, 1 1 0, 0 1 0"/>
+						<TextureCoordinate3D point="1 0 0, 1 0 0, 1 0 0, 1 0 0"/>
+						<TextureCoordinate3D point="0 1 0, 0 1 0, 0 1 0, 0 1 0"/>
+					</MultiTextureCoordinate>
+				</IndexedFaceSet>
+				<Appearance>
+			        <CommonSurfaceShader
+                        diffuseFactor="1 1 1"
+                        specularFactor="1 1 1"
+                        shininessFactor="1"
+                        tangentTextureCoordinatesId="1"
+                        binormalTextureCoordinatesId="2"
+                    >
+                      <ImageTexture containerField="normalTexture" url="data/normal_test.tga"/>
+                    </CommonSurfaceShader>
+
+				</Appearance>
+			</Shape>
+		</Transform>
+		
+        <!-- only tangent in u -->
+        <Transform translation="-1 0 0">
+			<Shape>
+				<IndexedFaceSet coordIndex="0 1 2 0 2 3">
+					<Coordinate point="-.5 -.5 0 .5 -.5 0 .5 .5 0 -.5 .5 0"/>
+					<MultiTextureCoordinate>
+						<TextureCoordinate3D point="0 0 0, 1 0 0, 1 1 0, 0 1 0"/>
+						<TextureCoordinate3D point="1 0 0, 1 0 0, 1 0 0, 1 0 0"/>
+					</MultiTextureCoordinate>
+				</IndexedFaceSet>
+				<Appearance>
+			        <CommonSurfaceShader
+                        diffuseFactor="1 1 1"
+                        specularFactor="1 1 1"
+                        shininessFactor="1"
+                        tangentTextureCoordinatesId="1"
+                        binormalTextureCoordinatesId="-1"
+                    >
+                      <ImageTexture containerField="normalTexture" url="data/normal_test.tga"/>
+                    </CommonSurfaceShader>
+
+				</Appearance>
+			</Shape>
+		</Transform>
+
+        <!-- no tangents -->
+        <Transform translation="1 0 0">
+			<Shape>
+				<IndexedFaceSet coordIndex="0 1 2 0 2 3">
+					<Coordinate point="-.5 -.5 0 .5 -.5 0 .5 .5 0 -.5 .5 0"/>
+					<MultiTextureCoordinate>
+						<TextureCoordinate3D point="0 0 0, 1 0 0, 1 1 0, 0 1 0"/>
+<!--					<TextureCoordinate3D point="1 0 0, 1 0 0, 1 0 0, 1 0 0"/>
+						<TextureCoordinate3D point="0 1 0, 0 1 0, 0 1 0, 0 1 0"/> -->
+					</MultiTextureCoordinate>
+				</IndexedFaceSet>
+				<Appearance>
+			        <CommonSurfaceShader
+                        diffuseFactor="1 1 1"
+                        specularFactor="1 1 1"
+                        shininessFactor="1"
+                        tangentTextureCoordinatesId="-1"
+                        binormalTextureCoordinatesId="-1"
+                    >
+                      <ImageTexture containerField="normalTexture" url="data/normal_test.tga"/>
+                    </CommonSurfaceShader>
+
+				</Appearance>
+			</Shape>
+		</Transform>
+
+    </Scene>
+</X3D>

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE X3D PUBLIC "ISO//Web3D//DTD X3D 3.0//EN" "http://www.web3d.org/specifications/x3d-3.0.dtd">
+<X3D xmlns:xsd='http://www.w3.org/2001/XMLSchema-instance' profile='Full' version='3.0' xsd:noNamespaceSchemaLocation='http://www.web3d.org/specifications/x3d-3.0.xsd'>
+
+<Engine>
+  <RenderJob>
+	<WindowGroup>
+	  <Window size='640 480'/>
+	</WindowGroup>
+  </RenderJob>
+</Engine>
+
+<Scene> 
+  <!-- OpenNI stuff -->
+  <IOSensor DEF='kinect' type='NI'>
+	<field accessType='outputOnly' 	name='Depth' 		    type='SFImage'/>
+	<field accessType='outputOnly'  name='JointPositions'	type='MFVec3f'/>
+  </IOSensor>
+
+  <GradientBackground position='0 1' color='0 0.329 0.706 0 0.008 0.082'/>
+
+  <Foreground>      
+	<PolygonOverlay positions='0.8 0.8 1 0.8 1 1 0.8 1'>
+	  <Appearance>
+		<PixelTexture2D DEF='depth'/>
+	  </Appearance>
+	</PolygonOverlay>
+  </Foreground>
+
+  <Transform DEF='notice' scale='0.4 0.4 0.4' translation='-5 0 0'>
+	<Text string="Stand in front of the camera and hold your arms to form a PSI pose." />
+  </Transform>
+
+  <Transform DEF='done' scale='0.4 0.4 0.4' translation='-5 -1 0'>
+	<Text string="You are now done?!?!" />
+  </Transform>
+
+  <Group DEF='skeleton'>
+  </Group>
+
+  <Shape DEF='lines'>
+	<Appearance>
+	  <LineProperties linewidthScaleFactor='4'/>
+	  <Material emissiveColor='0 1 0'/>
+	</Appearance>
+  </Shape>
+
+  <Group>
+	<Shape>
+	  <Appearance>
+		  <Material DEF='mat' diffuseColor='1 0 0'/>
+	  </Appearance>
+	  <Sphere/>
+	</Shape>
+
+	<TouchSensor DEF='ts'/>
+  </Group>
+  
+  <!-- dynamic group -->
+  <Group DEF='dynamic_group'/>
+  <!-- now some images -->
+	<!-- 
+	-->
+  <Transform translation="-2 0 -1" scale="0.1 0.1 0.1">
+	<Shape DEF="image2d">
+	  <Rectangle2D size='2 2'
+	  solid='FALSE'
+	  lit='TRUE'
+	  resolution='1'
+	  multiResolutionLevel='1'
+	  invalidateVolume='FALSE'
+	  normalUpdateMode='nice'
+	  cacheMode='auto'
+	  optimizationMode='auto'
+	  logFeature=''
+	  />
+	  <Appearance>
+		<ImageTexture url="http://www.google.com/intl/en_ALL/images/srpr/logo1w.png" logFeature=""/>
+	  </Appearance>
+	</Shape>
+  </Transform>
+
+  <Transform translation="3 0 -3" scale="0.1 0.1 0.1">
+	<Shape DEF="imageBox3d">
+	  <Box size='2 2 2'
+	  useGeoCache='TRUE'
+	  solid='TRUE'
+	  lit='TRUE'
+	  resolution='1'
+	  multiResolutionLevel='1'
+	  invalidateVolume='FALSE'
+	  normalUpdateMode='nice'
+	  cacheMode='auto'
+	  optimizationMode='auto'
+	  logFeature=''
+	  />
+	  <Appearance>
+		<ImageTexture url="http://l.yimg.com/g/images/en-us/flickr-yahoo-logo.png.v3" logFeature=""/>
+	  </Appearance>
+	</Shape>
+  </Transform>
+
+  <!-- scripting -->
+  <Script DEF='script' url='script.js'>
+	<!--<script type="text/javascript" src="media/js/jquery.min.js"></script>-->
+	<field name='skeleton_changed' accessType='inputOnly' type='MFVec3f' />
+
+	<field accessType='initializeOnly' name='skeleton' type='SFNode'>
+	  <Group USE='skeleton' />
+	</field>
+
+	<field accessType='initializeOnly' name='lines' type='SFNode'>
+	  <Shape USE='lines' />
+	</field>
+
+	<field accessType='outputOnly' name='notice' type='SFNode'>
+	  <Shape USE='notice' />
+	</field>
+
+	<SolidBackground color='0 0 1'/>
+	<Group DEF='test'>
+	  <Transform DEF="TRANS" translation="-2 2 0">
+		<Shape DEF="helloworld">
+		  <Text string="Hello world?!?!" />
+		</Shape>
+	  </Transform>
+	  <SpaceSensor DEF=""/>
+	  <ROUTE fromNode="TS" fromField="translation_changed" toNode="TRANS" toField="translation"/>
+	</Group>
+
+
+	<field accessType='initializeOnly' name='dynamic_group' type='SFNode'>
+	  <Group USE='dynamic_group'/>
+	</field>
+
+	<!-- possibly usable to load a library <ImportLibrary library="c:\H3D\bin\UINodes.dll" />  -->
+
+	<![CDATA[ecmascript:		
+
+	]]>
+  </Script>
+
+  <ROUTE fromNode='kinect' fromField='JointPositions' toNode='script'	toField='skeleton_changed'/>
+  <ROUTE fromNode='kinect' fromField='Depth' 			toNode='depth'	toField='set_image'/>
+</Scene>
+
+</X3D>

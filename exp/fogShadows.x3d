@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE X3D PUBLIC "ISO//Web3D//DTD X3D 3.0//EN" "http://www.web3d.org/specifications/x3d-3.0.dtd">
+<X3D xmlns:xsd='http://www.w3.org/2001/XMLSchema-instance' profile='Full' version='3.0' xsd:noNamespaceSchemaLocation='http://www.web3d.org/specifications/x3d-3.0.xsd'>
+  <Scene DEF='scene'>
+    <NavigationInfo headlight='false'/>
+    <Viewpoint position='0 0 5'/>
+
+    <Environment DEF='env' globalShadowIntensity='1' shadowMode='niceUniformSoftShadow' shadowMapSize='1024' shadowOffset='8' shadowSmoothness='0.5' />
+    <Fog color='0 0 1' fogType='EXPONENTIAL' visibilityRange='100'/>
+    
+    <Transform DEF='trans0' translation='0 0 -2'>
+      <Shape>
+        <Appearance>
+          <Material ambientIntensity='1' diffuseColor='.5 .5 .5'/>
+        </Appearance>
+        <Rectangle2D size="5 5"/>
+      </Shape>
+    </Transform>
+    <Transform DEF='trans01' translation='0 0 1'>
+      <Shape>
+        <Appearance>
+          <Material diffuseColor='.5 .5 .5'/>
+        </Appearance>
+        <Rectangle2D size="1 1"/>
+      </Shape>
+    </Transform>
+    <Transform DEF='trans1' translation='-2 2 2'>
+      <Shape>
+        <Appearance>
+          <Material diffuseColor='1 0 0'/>
+        </Appearance>
+        <Box/>
+      </Shape>
+    </Transform>
+    <Transform DEF='trans2' translation='2 2 2'>
+      <Shape>
+        <Appearance>
+          <Material diffuseColor='0 1 0'/>
+        </Appearance>
+        <Cone/>
+      </Shape>
+    </Transform>
+    <Transform DEF='trans3' translation='-2 -2 2'>
+      <Shape>
+        <Appearance>
+          <Material diffuseColor='0 0 1'/>
+        </Appearance>
+        <Cylinder/>
+      </Shape>
+    </Transform>
+    <Transform DEF='trans4' translation='2 -2 2'>
+      <Shape>
+        <Appearance>
+          <Material diffuseColor='1 1 0'/>
+        </Appearance>
+        <Sphere/>
+      </Shape>
+    </Transform>
+
+    <Transform translation='0 0 6'>
+          <PointLight showProxyGeometry='true'/>
+    </Transform>
+    <Transform translation='3 0 6'>
+          <PointLight color='.001 0 0' showProxyGeometry='true'/>
+    </Transform>
+    <Transform translation='-3 0 6'>
+          <PointLight color='0 .001 0' showProxyGeometry='true'/>
+    </Transform>
+<!--    <LocalFog on='TRUE' visibilityRange='10' fogType='LINEAR' color='0 1 0' enabled='TRUE' /> -->
+    <Shape>
+      <Torus DEF='tor' solid="false"/>
+      <Appearance>
+        <CommonSurfaceShader DEF='bla'
+          diffuseFactor="0.5 0.5 0.5"
+          >
+        </CommonSurfaceShader>
+      </Appearance>
+    </Shape>
+  </Scene>
+</X3D>

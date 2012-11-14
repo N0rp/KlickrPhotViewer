@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE X3D PUBLIC "ISO//Web3D//DTD X3D 3.0//EN" "http://www.web3d.org/specifications/x3d-3.0.dtd">
+<X3D xmlns:xsd='http://www.w3.org/2001/XMLSchema-instance' profile='Full' version='3.0' xsd:noNamespaceSchemaLocation='http://www.web3d.org/specifications/x3d-3.0.xsd'>
+    <Engine>
+        <RenderJob>
+            <WindowGroup>
+                <Window size='1000 500'/>
+            </WindowGroup>
+        </RenderJob>
+    </Engine>
+  
+    <Scene>  	
+		
+		
+
+		<Group DEF='buttons'>
+			<Transform DEF='box_0' translation='2 2 0' >	
+				<Group DEF='box_template'>
+					<Shape>
+						<Box
+							size='2 2 0.1'
+							useGeoCache='TRUE'
+							solid='TRUE'
+							lit='TRUE'
+							resolution='1'
+							multiResolutionLevel='1'
+							invalidateVolume='FALSE'
+							normalUpdateMode='nice'
+							cacheMode='auto'
+							optimizationMode='auto'
+							logFeature=''
+						/>
+						<Appearance>
+							<Material diffuseColor='0.2 0.3 0.2'/>
+							<ImageTexture url="../../img/standard.jpg"/>
+						</Appearance>
+					</Shape>	
+				</Group>
+				<TouchSensor DEF='box_0_touch'/>
+				<TimeSensor DEF='box_0_time_rotate' cycleInterval='3' loop='false'/>
+				<TimeSensor DEF='box_0_time_minmax' cycleInterval='3' loop='false'/>
+				<OrientationInterpolator DEF='box_0_rotate_right' 
+					key='0 0.25 0.5 0.75 1'
+					keyValue='0 1 0 0, 0 1 0 1.57, 0 1 0 3.14159, 0 1 0 3.14159, 0 1 0 3.14159'
+				/>
+			</Transform>
+			
+			<Transform DEF='box_1' translation='0 2 0' >
+				<Group USE='box_template'/>
+			</Transform>
+			
+			<Transform DEF='box_2' translation='-2 2 0'>
+				<Group USE='box_template'/>
+			</Transform>
+			
+			<Transform DEF='box_3' translation='-4 2 0'>
+				<Group USE='box_template'/>
+			</Transform>
+			
+		</Group>
+		
+		
+		<ROUTE fromNode='box_0_time_rotate' 	fromField='fraction_changed' 	toNode='box_0_rotate_right' 	toField='set_fraction'/>
+		<ROUTE fromNode='box_0_rotate_right' 	fromField='value_changed' 	toNode='box_0' 	toField='rotation'/>
+		
+		
+		
+		
+        <Script DEF='script' url="script.js">
+			<field name='buttonz' accessType='inputOutput' type='MFNode'>
+				<Group USE='buttons'/>
+			</field>
+			
+			<field name='box_0_touch' accessType='inputOnly' type='SFBool'/>
+        </Script>
+		<ROUTE fromNode='box_0_touch' 		fromField='isActive' 	toNode='script' toField='box_0_touch'/>
+			
+    </Scene>
+</X3D>

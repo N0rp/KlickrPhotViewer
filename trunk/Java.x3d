@@ -1,0 +1,1414 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE X3D PUBLIC "ISO//Web3D//DTD X3D 3.0//EN" "http://www.web3d.org/specifications/x3d-3.0.dtd">
+<X3D xmlns:xsd='http://www.w3.org/2001/XMLSchema-instance' profile='Full' version='3.0' xsd:noNamespaceSchemaLocation='http://www.web3d.org/specifications/x3d-3.0.xsd'>
+  
+
+<Engine>
+ <RenderJob>
+	<WindowGroup>
+	  <Window size='1000 500'/>
+	</WindowGroup>
+  </RenderJob>
+</Engine>	
+  
+<Scene>
+	// hoert auf Tastatursignale, damit der Benutzer mit der Tastatur nach Bildtags suchen kann
+	<KeySensor DEF='keyboard'/>
+	
+	////////////////////////////////////////////////////////////////
+	// Etwas Hintergrundmusik macht das ganze etwas proffesionell //
+	////////////////////////////////////////////////////////////////
+	<!--
+	<Transform translation='0 0 0'>	
+		<Sound location='0 0 0' priority='1.0' direction='0 0 0' minBack='1000' minFront='1000' maxBack='1000' maxFront='1000'>
+			<AudioClip enabled='true' loop='true' url='"../music/69-1-1.wav" "../music/69-2-1.wav"'/>
+		</Sound>
+	</Transform>
+	-->
+	
+
+	///////////////////////////////////////////////////////////////
+	// Dieser Blickwinckel ist gut beim Vollbildmodus, dann wird //
+	// alles ordentlich angezeigt 								 //
+	///////////////////////////////////////////////////////////////
+	<Viewpoint DEF='vp1' position='0 0 11'/>
+	
+	
+	///////////////////
+	// Kinect Sensor //
+	///////////////////
+    <IOSensor DEF='kinect' type='NI'>
+        <field name='depth' 		 	accessType='outputOnly' type='SFImage'/>
+        <field name='JointPositions' 	accessType='outputOnly' type='MFVec3f'/>
+		<field name='image' 			accessType='outputOnly' type='SFImage'/>
+		<field  name='NumUsers'			accessType='outputOnly' type='SFInt32'/>
+		<field  name='Gesture'			accessType='outputOnly' type='SFString'/>
+		<field name='JointOrientations'	accessType='outputOnly' type='MFRotation'/>
+    </IOSensor>
+	
+    
+	///////////////////////////////////
+	// Bildausgabe der Kinect-Kamera //
+	///////////////////////////////////
+    <Foreground>      
+        <PolygonOverlay positions='0.85 0.75 0.99 0.75 0.99 0.97 0.85 0.97'>
+            <Appearance>
+				<MultiTexture>
+					<PixelTexture2D DEF='image'/>
+					<PixelTexture2D DEF='depth'/>
+				</MultiTexture>
+            
+				<ComposedShader DEF='shader'>
+					<field accessType='inputOutput' name='image' type='SFInt32' value='0'/>
+					<field accessType='inputOutput' name='depth' type='SFInt32' value='1'/>
+                
+					<ShaderPart type='vertex'   url='"vp.glsl"'/>
+					<ShaderPart type='fragment' url='"fp.glsl"'/>
+				</ComposedShader>
+            </Appearance>
+		</PolygonOverlay>
+	</Foreground>
+
+	
+	/////////////////////////////////////////////////////////////
+	// Wichtige Definitionen fuer das Erzeugen der Handanzeige //
+	/////////////////////////////////////////////////////////////
+	<Group DEF='hand_gruppe'> </Group>
+	
+	
+	//////////////////////
+	// Hintergrundfarbe //
+	//////////////////////
+	<!-- UMGEBUNG TextureBackground -->
+	<TextureBackground DEF="TexturHintergrund" containerField="children">
+		<ImageTexture containerField="frontTexture" url="../img/hintergrund.jpg"/>
+		<ImageTexture containerField="rightTexture" url="../img/hintergrund.jpg"/>
+		<ImageTexture containerField="backTexture" url="../img/hintergrund.jpg"/>
+		<ImageTexture containerField="leftTexture" url="../img/hintergrund.jpg"/>
+	</TextureBackground>
+	
+	
+	/////////////////////////////////////////////
+	// Ladetext fuer die Kinectskeleterkennung //
+	/////////////////////////////////////////////
+	<Transform DEF='isKinectActive' scale='0.3 0.4 0.4' translation='6.3 1.7 0'>
+		<Text string="Analysing.." />
+	</Transform>	
+	
+	
+	////////////////////////////////////////////////////////////////////
+	// Plane-Box zur Darstellung des Bildes in eine groessere Version //
+	////////////////////////////////////////////////////////////////////
+	<Transform DEF='plane_box' translation='0 0 1.5'>
+		<Shape>
+			<Box size='8 6.9 0'/>
+			<Appearance>
+				<Material diffuseColor='0.2, 0.3, 0.2'/>
+			</Appearance>
+		</Shape>
+	</Transform>
+	
+	/////////////////////////////////////////////////////////////
+	// Zeigt die derzeitig geladenen Tags an                   //
+	/////////////////////////////////////////////////////////////
+	<Transform scale='0.3 0.4 2' translation='-6.4 -3.0 3' rotation="0 1 0 1.3">
+		<Text DEF='tagnotice' string="Loading images..." />
+	</Transform>
+	
+	<Transform DEF='notize_box' translation='-6.2 -3.1 2' rotation="0 1 0 1.3">
+		<Shape>
+			<Box
+				size='4.2 0.1 0'
+			/>
+			<Appearance>
+				<Material diffuseColor='0.2, 0.3, 0.2'/>
+			</Appearance>
+		</Shape>
+	</Transform>
+	
+	// Button zeigt an ob eine Geste moeglich ist
+	<Transform scale="0.5 0.5 0.05" translation="-7 3 0">
+		<Shape>
+			<Sphere/>
+			<Appearance>
+				<Material DEF='button_geste_material'
+					diffuseColor='0.1 0.0 0.0'
+					ambientIntensity='0.2'
+					shininess='1'
+					specularColor='1 1 1'
+				/>
+			</Appearance>
+		</Shape>
+	</Transform>
+	<Transform scale='0.6 0.6 1' translation='-7.2 2.85 0.2'>
+		<Text DEF='button_geste_text' string="+x" />
+	</Transform>
+	
+	
+	////////////////////////////////
+	// Leisten zur verschoenerung //
+	////////////////////////////////
+	<!--
+	<Transform translation='-4.5 -1.6 0'>
+		<Shape>
+			<Cylinder
+				radius='0.07'
+			height='4'
+			/>
+			<Appearance>
+				<Material DEF='leiste_L_unten' diffuseColor='0.2 0.3 0.2'/>
+			</Appearance>
+		</Shape>
+	</Transform>
+	<Transform translation='-4.7 -2.1 0'>
+		<Shape>
+			<Cylinder
+				radius='0.03'
+				height='3'
+			/>
+			<Appearance>
+				<Material DEF='leiste_L_unten1' diffuseColor='0.2 0.0 0.0'/>
+			</Appearance>
+		</Shape>
+	</Transform>
+	//////////////////////////////////////////////////////////////////////////////////////
+	
+	<Transform translation='-4.7 1.6 0'>
+		<Shape>
+			<Cylinder
+				radius='0.07'
+				height='4'
+			/>
+			<Appearance>
+				<Material DEF='leiste_L_oben' diffuseColor='0.2 0.3 0.2'/>
+			</Appearance>
+		</Shape>
+	</Transform>
+	<Transform translation='-4.5 2.1 0'>
+		<Shape>
+			<Cylinder
+				radius='0.03'
+				height='3'
+			/>
+			<Appearance>
+				<Material DEF='leiste_L_oben1' diffuseColor='0.2 0.0 0.0'/>
+			</Appearance>
+		</Shape>
+	</Transform>
+	//////////////////////////////////////////////////////////////////////////////////////
+		
+	<Transform translation='4.5 -1.6 0'>
+		<Shape>
+			<Cylinder
+				radius='0.07'
+				height='4'
+			/>
+			<Appearance>
+				<Material DEF='leiste_R_unten' diffuseColor='0.2 0.3 0.2'/>
+			</Appearance>
+		</Shape>
+	</Transform>
+	<Transform translation='4.7 -2.1 0'>
+		<Shape>
+			<Cylinder
+				radius='0.03'
+				height='3'
+			/>
+			<Appearance>
+				<Material DEF='leiste_R_unten1' diffuseColor='0.2 0.0 0.0'/>
+			</Appearance>
+		</Shape>
+	</Transform>
+	//////////////////////////////////////////////////////////////////////////////////////
+	
+	<Transform translation='4.7 1.6 0'>
+		<Shape>
+			<Cylinder
+				radius='0.07'
+				height='4'
+			/>
+			<Appearance>
+				<Material DEF='leiste_R_oben' diffuseColor='0.2 0.3 0.2'/>
+			</Appearance>
+		</Shape>
+	</Transform>
+	<Transform translation='4.5 2.1 0'>
+		<Shape>
+			<Cylinder
+				radius='0.03'
+				height='3'
+			/>
+			<Appearance>
+				<Material DEF='leiste_R_oben1' diffuseColor='0.2 0.0 0.0'/>
+			</Appearance>
+		</Shape>
+	</Transform>
+		
+	<TimeSensor DEF="Zeit" cycleInterval="3" loop="true"/>
+	<ScalarInterpolator DEF='licht_bewegung' key='0, 0.5, 1.0' keyValue='0.2, 0.5, 0.3'/>
+
+	<ROUTE fromNode='Zeit' fromField='fraction_changed' toNode='licht_bewegung' toField='set_fraction'/>
+	<ROUTE fromNode='licht_bewegung' fromField='value_changed' toNode='leiste_L_unten' 	toField='transparency'/>
+	<ROUTE fromNode='licht_bewegung' fromField='value_changed' toNode='leiste_R_unten' 	toField='transparency'/>
+	<ROUTE fromNode='licht_bewegung' fromField='value_changed' toNode='leiste_L_oben' 	toField='transparency'/>
+	<ROUTE fromNode='licht_bewegung' fromField='value_changed' toNode='leiste_R_oben' 	toField='transparency'/>
+	
+	<ROUTE fromNode='licht_bewegung' fromField='value_changed' toNode='leiste_L_unten1'	toField='transparency'/>
+	<ROUTE fromNode='licht_bewegung' fromField='value_changed' toNode='leiste_R_unten1'	toField='transparency'/>
+	<ROUTE fromNode='licht_bewegung' fromField='value_changed' toNode='leiste_L_oben1' 	toField='transparency'/>
+	<ROUTE fromNode='licht_bewegung' fromField='value_changed' toNode='leiste_R_oben1' 	toField='transparency'/>
+	-->
+	
+	//////////////////////////////////////////
+	// Definiert ein Rahmen fuer die Bilder //
+	// 1. Balken links						//
+	// 2. Balken oben						//
+	// 3. Balken rechts						//
+	// 4. Balken unten						//
+	//////////////////////////////////////////
+	<Transform  translation='-4.5 3 0'>
+	<Group DEF='rahmen'>
+		<Transform translation='-1.1 0 0'>
+			<Shape>
+				<Cylinder
+					radius='0.03'
+					height='2.23'
+				/>
+				<Appearance>
+					<Material diffuseColor='0.2, 0.3, 0.2'/>
+				</Appearance>
+			</Shape>
+		</Transform>
+	
+		<Transform translation='0 1.1 0' rotation='0 0 1 1.57'>
+			<Shape>
+				<Cylinder
+					radius='0.03'
+					height='2.23'
+				/>
+				<Appearance>
+					<Material diffuseColor='0.2, 0.3, 0.2'/>
+				</Appearance>
+			</Shape>
+		</Transform>
+	
+		<Transform translation='1.1 0 0'>
+			<Shape>
+				<Cylinder
+					radius='0.03'
+					height='2.23'
+				/>
+				<Appearance>
+					<Material diffuseColor='0.2, 0.3, 0.2'/>
+				</Appearance>
+			</Shape>
+		</Transform>
+	
+		<Transform translation='0 -1.1 0' rotation='0 0 1 1.57'>
+			<Shape>
+				<Cylinder
+					radius='0.03'
+					height='2.23'
+					/>
+				<Appearance>
+					<Material diffuseColor='0.2, 0.3, 0.2'/>
+				</Appearance>
+			</Shape>
+		</Transform>
+	</Group>
+	</Transform>
+	
+	
+	//////////////////////////////////////////
+	// Winkel-Werte 1. 0 1 0 0				//
+	//				2. 0 1 0 1.57			//
+	//				3. 0 1 0 3.14159		//
+	//				4. 0 1 0 4.71159		//
+	//				5. 0 1 0 6.28318		//
+	//////////////////////////////////////////
+	// imagebox-Nummer faengt bei 0 an da es so besser mit dem array-Index korespondiert
+	//////////////////
+	// ImageBox - 0 //
+	//////////////////
+	<Transform DEF='box_0' translation='-4.5 3 0'>
+		<Shape>
+	    	<Box
+				size='2 2 0.1'
+				useGeoCache='TRUE'
+				solid='TRUE'
+				lit='TRUE'
+				resolution='1'
+				multiResolutionLevel='1'
+				invalidateVolume='FALSE'
+				normalUpdateMode='nice'
+				cacheMode='auto'
+				optimizationMode='auto'
+				logFeature=''
+			/>
+			<Appearance>
+				<Material diffuseColor='0.2 0.3 0.2'/>
+				<ImageTexture DEF='image_change_0' url="../img/standard.jpg"/>
+			</Appearance>
+		</Shape>
+		
+		<TouchSensor DEF='touch_me_0'/>
+		
+		<TimeSensor DEF='zeit_box_0_links' cycleInterval='3' loop='false'/>
+		<TimeSensor DEF='zeit_box_0_rechts' cycleInterval='3' loop='false'/>
+		
+		<TimeSensor DEF='box_0_zeit_minmax' cycleInterval='0.3' loop='false'/>
+		
+		<OrientationInterpolator DEF='drehung_box_0_rechts' 
+			key='0 0.25 0.5 0.75 1'
+			keyValue='0 1 0 0, 0 1 0 1.57, 0 1 0 3.14159, 0 1 0 3.14159, 0 1 0 3.14159'
+		/>
+		<OrientationInterpolator DEF='drehung_box_0_links' 
+			key='0 0.25 0.5 0.75 1'
+			keyValue='0 1 0 3.14159, 0 1 0 1.57, 0 1 0 0, 0 1 0 0, 0 1 0 0'
+		/>
+		//KeyValues sind egal da sie durch Java gesetzt werden
+		<PositionInterpolator DEF='box_0_groesse' 
+			key='0 1'
+			keyValue='1 1 0.1, 3 2.7 0.1'
+		/>
+		<PositionInterpolator DEF='box_0_position' 
+			key='0 1'
+			keyValue='-4.5 3 0, 0 0.35 3'
+		/>
+		
+	</Transform>
+	// Drehen rechts, wenn ein Zeitevent per Mouse-Click auf den linken Button oder mit der Kinect generiert wird
+	<!--<ROUTE fromNode='touch_me_0' 			fromField='touchTime' 			toNode='zeit_box_0_max'		toField='startTime'/>-->
+ 	//Routen zum maximieren/minimieren
+	<ROUTE fromNode='box_0_zeit_minmax' 	fromField='fraction_changed' 	toNode='box_0_groesse' 	toField='set_fraction'/>
+	<ROUTE fromNode='box_0_zeit_minmax' 	fromField='fraction_changed' 	toNode='box_0_position' toField='set_fraction'/>
+ 	<ROUTE fromNode='box_0_groesse' 		fromField='value_changed' 		toNode='box_0' 					toField='scale'/>
+	<ROUTE fromNode='box_0_position' 		fromField='value_changed' 		toNode='box_0' 						toField='translation'/>
+	// Drehen links, wenn ein Zeitevent per Mouse-Click auf den linken Button oder mit der Kinect generiert wird
+ 	<ROUTE fromNode='zeit_box_0_links' 		fromField='fraction_changed' 	toNode='drehung_box_0_links' 	toField='set_fraction'/>
+ 	<ROUTE fromNode='drehung_box_0_links' 	fromField='value_changed' 		toNode='box_0' 					toField='rotation'/>
+	
+	
+	//////////////////
+	// ImageBox - 1 //
+	//////////////////
+	<Transform translation='-1.5 3 0'><Group USE='rahmen'/></Transform>
+	<Transform DEF='box_1' translation='-1.5 3 0'>
+		<Shape>
+	    	<Box
+				size='2 2 0.1'
+				useGeoCache='TRUE'
+				solid='TRUE'
+				lit='TRUE'
+				resolution='1'
+				multiResolutionLevel='1'
+				invalidateVolume='FALSE'
+				normalUpdateMode='nice'
+				cacheMode='auto'
+				optimizationMode='auto'
+				logFeature=''
+			/>
+			<Appearance>
+				<Material diffuseColor='0.2 0.3 0.2'/>
+				<ImageTexture DEF='image_change_1' url="../img/standard.jpg"/>
+			</Appearance>
+		</Shape>
+		
+		<TouchSensor DEF='touch_me_1'/>
+		
+		<TimeSensor DEF='zeit_box_1_links' cycleInterval='3' loop='false'/>
+		<TimeSensor DEF='zeit_box_1_rechts' cycleInterval='3' loop='false'/>
+		
+		<OrientationInterpolator DEF='drehung_box_1_rechts' 
+			key='0 0.25 0.5 0.75 1'
+			keyValue='0 1 0 0, 0 1 0 1.57, 0 1 0 3.14159, 0 1 0 3.14159, 0 1 0 3.14159'
+		/>
+		<OrientationInterpolator DEF='drehung_box_1_links' 
+			key='0 0.25 0.5 0.75 1'
+			keyValue='0 1 0 3.14159, 0 1 0 1.57, 0 1 0 0, 0 1 0 0, 0 1 0 0'
+		/>
+	</Transform>
+	//Rechts drehen
+	<ROUTE fromNode='touch_me_1' 			fromField='touchTime' 			toNode='zeit_box_1_rechts'		toField='startTime'/>
+ 	<ROUTE fromNode='zeit_box_1_rechts' 	fromField='fraction_changed' 	toNode='drehung_box_1_rechts' 	toField='set_fraction'/>
+ 	<ROUTE fromNode='drehung_box_1_rechts' 	fromField='value_changed' 		toNode='box_1' 					toField='rotation'/>
+	//Links drehen
+ 	<ROUTE fromNode='zeit_box_1_links' 		fromField='fraction_changed' 	toNode='drehung_box_1_links' 	toField='set_fraction'/>
+ 	<ROUTE fromNode='drehung_box_1_links' 	fromField='value_changed' 		toNode='box_1' 					toField='rotation'/>
+	
+	
+	//////////////////
+	// ImageBox - 2 //
+	//////////////////
+	<Transform translation='1.5 3 0'><Group USE='rahmen'/></Transform>
+	<Transform DEF='box_2' translation='1.5 3 0'>
+		<Shape>
+	    	<Box
+				size='2 2 0.1'
+				useGeoCache='TRUE'
+				solid='TRUE'
+				lit='TRUE'
+				resolution='1'
+				multiResolutionLevel='1'
+				invalidateVolume='FALSE'
+				normalUpdateMode='nice'
+				cacheMode='auto'
+				optimizationMode='auto'
+				logFeature=''
+			/>
+			<Appearance>
+				<Material diffuseColor='0.2 0.3 0.2'/>
+				<ImageTexture DEF='image_change_2' url="../img/standard.jpg"/>
+			</Appearance>
+		</Shape>
+		
+		<TouchSensor DEF='touch_me_2'/>
+		
+		<TimeSensor DEF='zeit_box_2_links' cycleInterval='3' loop='false'/>
+		<TimeSensor DEF='zeit_box_2_rechts' cycleInterval='3' loop='false'/>
+		
+		<OrientationInterpolator DEF='drehung_box_2_rechts' 
+			key='0 0.25 0.5 0.75 1'
+			keyValue='0 1 0 0, 0 1 0 1.57, 0 1 0 3.14159, 0 1 0 3.14159, 0 1 0 3.14159'
+		/>
+		<OrientationInterpolator DEF='drehung_box_2_links' 
+			key='0 0.25 0.5 0.75 1'
+			keyValue='0 1 0 3.14159, 0 1 0 1.57, 0 1 0 0, 0 1 0 0, 0 1 0 0'
+		/>
+	</Transform>
+	// Rechts drehen
+	<ROUTE fromNode='touch_me_2' 			fromField='touchTime' 			toNode='zeit_box_2_rechts'		toField='startTime'/>
+ 	<ROUTE fromNode='zeit_box_2_rechts'		fromField='fraction_changed' 	toNode='drehung_box_2_rechts'	toField='set_fraction'/>
+ 	<ROUTE fromNode='drehung_box_2_rechts' 	fromField='value_changed' 		toNode='box_2' 					toField='rotation'/>
+	// Links drehen
+ 	<ROUTE fromNode='zeit_box_2_links' 		fromField='fraction_changed' 	toNode='drehung_box_2_links' 	toField='set_fraction'/>
+ 	<ROUTE fromNode='drehung_box_2_links' 	fromField='value_changed' 		toNode='box_2' 					toField='rotation'/>
+	
+	
+	//////////////////
+	// ImageBox - 3 //
+	//////////////////
+	<Transform translation='4.5 3 0'><Group USE='rahmen'/></Transform>
+	<Transform DEF='box_3' translation='4.5 3 0'>
+		<Shape>
+	    	<Box
+				size='2 2 0.1'
+				useGeoCache='TRUE'
+				solid='TRUE'
+				lit='TRUE'
+				resolution='1'
+				multiResolutionLevel='1'
+				invalidateVolume='FALSE'
+				normalUpdateMode='nice'
+				cacheMode='auto'
+				optimizationMode='auto'
+				logFeature=''
+			/>
+			<Appearance>
+				<Material diffuseColor='0.2 0.3 0.2'/>
+				<ImageTexture DEF='image_change_3' url="../img/standard.jpg"/>
+			</Appearance>
+		</Shape>
+		
+		<TouchSensor DEF='touch_me_3'/>
+
+		<TimeSensor DEF='zeit_box_3_links' cycleInterval='3' loop='false'/>
+		<TimeSensor DEF='zeit_box_3_rechts' cycleInterval='3' loop='false'/>
+		
+		<OrientationInterpolator DEF='drehung_box_3_rechts' 
+			key='0 0.25 0.5 0.75 1'
+			keyValue='0 1 0 0, 0 1 0 1.57, 0 1 0 3.14159, 0 1 0 3.14159, 0 1 0 3.14159'
+		/>
+		<OrientationInterpolator DEF='drehung_box_3_links' 
+			key='0 0.25 0.5 0.75 1'
+			keyValue='0 1 0 3.14159, 0 1 0 1.57, 0 1 0 0, 0 1 0 0, 0 1 0 0'
+		/>
+	</Transform>
+	//rechts drehen
+	<ROUTE fromNode='touch_me_3'			fromField='touchTime' 			toNode='zeit_box_3_rechts'		toField='startTime'/>
+ 	<ROUTE fromNode='zeit_box_3_rechts' 	fromField='fraction_changed' 	toNode='drehung_box_3_rechts'	toField='set_fraction'/>
+ 	<ROUTE fromNode='drehung_box_3_rechts' 	fromField='value_changed' 		toNode='box_3' 					toField='rotation'/>
+	//links drehen
+ 	<ROUTE fromNode='zeit_box_3_links' 		fromField='fraction_changed' 	toNode='drehung_box_3_links' 	toField='set_fraction'/>
+ 	<ROUTE fromNode='drehung_box_3_links' 	fromField='value_changed' 		toNode='box_3' 					toField='rotation'/>
+	
+	
+	//////////////////
+	// ImageBox - 4 //
+	//////////////////
+	<Transform translation='-4.5 0.5 0'><Group USE='rahmen'/></Transform>
+	<Transform DEF='box_4' translation='-4.5 0.5 0'>
+		<Shape>
+	    	<Box 
+				size='2 2 0.1'
+				useGeoCache='TRUE'
+				solid='TRUE'
+				lit='TRUE'
+				resolution='1'
+				multiResolutionLevel='1'
+				invalidateVolume='FALSE'
+				normalUpdateMode='nice'
+				cacheMode='auto'
+				optimizationMode='auto'
+				logFeature=''
+			/>
+			<Appearance>
+				<Material diffuseColor='0.2 0.3 0.2'/>
+				<ImageTexture DEF='image_change_4' url="../img/standard.jpg"/>
+			</Appearance>
+		</Shape>
+		
+		<TouchSensor DEF='touch_me_4'/>
+		
+		<TimeSensor DEF='zeit_box_4_links' cycleInterval='3' loop='false'/>
+		<TimeSensor DEF='zeit_box_4_rechts' cycleInterval='3' loop='false'/>
+		
+		<OrientationInterpolator DEF='drehung_box_4_rechts' 
+			key='0 0.25 0.5 0.75 1'
+			keyValue='0 1 0 0, 0 1 0 1.57, 0 1 0 3.14159, 0 1 0 3.14159, 0 1 0 3.14159'
+		/>
+		<OrientationInterpolator DEF='drehung_box_4_links' 
+			key='0 0.25 0.5 0.75 1'
+			keyValue='0 1 0 3.14159, 0 1 0 1.57, 0 1 0 0, 0 1 0 0, 0 1 0 0'
+		/>
+	</Transform>
+	//rechts drehen
+	<ROUTE fromNode='touch_me_4' 			fromField='touchTime' 			toNode='zeit_box_4_rechts'		toField='startTime'/>
+ 	<ROUTE fromNode='zeit_box_4_rechts' 	fromField='fraction_changed' 	toNode='drehung_box_4_rechts'	toField='set_fraction'/>
+ 	<ROUTE fromNode='drehung_box_4_rechts' 	fromField='value_changed' 		toNode='box_4' 					toField='rotation'/>
+	//links drehen
+ 	<ROUTE fromNode='zeit_box_4_links' 		fromField='fraction_changed' 	toNode='drehung_box_4_links' 	toField='set_fraction'/>
+ 	<ROUTE fromNode='drehung_box_4_links' 	fromField='value_changed' 		toNode='box_4' 					toField='rotation'/>
+	
+	
+	//////////////////
+	// ImageBox - 5 //
+	//////////////////
+	<Transform translation='-1.5 0.5 0'><Group USE='rahmen'/></Transform>
+	<Transform DEF='box_5' translation='-1.5 0.5 0'>
+		<Shape>
+	    	<Box
+				size='2 2 0.1'
+				useGeoCache='TRUE'
+				solid='TRUE'
+				lit='TRUE'
+				resolution='1'
+				multiResolutionLevel='1'
+				invalidateVolume='FALSE'
+				normalUpdateMode='nice'
+				cacheMode='auto'
+				optimizationMode='auto'
+				logFeature=''
+			/>
+			<Appearance>
+				<Material diffuseColor='0.2 0.3 0.2'/>
+				<ImageTexture DEF='image_change_5' url="../img/standard.jpg"/>
+			</Appearance>
+		</Shape>
+		
+		<TouchSensor DEF='touch_me_5'/>
+		
+		<TimeSensor DEF='zeit_box_5_links' cycleInterval='3' loop='false'/>
+		<TimeSensor DEF='zeit_box_5_rechts' cycleInterval='3' loop='false'/>
+		
+		<OrientationInterpolator DEF='drehung_box_5_rechts' 
+			key='0 0.25 0.5 0.75 1'
+			keyValue='0 1 0 0, 0 1 0 1.57, 0 1 0 3.14159, 0 1 0 3.14159, 0 1 0 3.14159'
+		/>
+		<OrientationInterpolator DEF='drehung_box_5_links' 
+			key='0 0.25 0.5 0.75 1'
+			keyValue='0 1 0 3.14159, 0 1 0 1.57, 0 1 0 0, 0 1 0 0, 0 1 0 0'
+		/>
+	</Transform>
+	//rechts drehen
+	<ROUTE fromNode='touch_me_5' 			fromField='touchTime' 			toNode='zeit_box_5_rechts'		toField='startTime'/>
+ 	<ROUTE fromNode='zeit_box_5_rechts'		fromField='fraction_changed' 	toNode='drehung_box_5_rechts'	toField='set_fraction'/>
+ 	<ROUTE fromNode='drehung_box_5_rechts' 	fromField='value_changed' 		toNode='box_5'					toField='rotation'/>
+	//links drehen
+ 	<ROUTE fromNode='zeit_box_5_links' 		fromField='fraction_changed' 	toNode='drehung_box_5_links' 	toField='set_fraction'/>
+ 	<ROUTE fromNode='drehung_box_5_links' 	fromField='value_changed' 		toNode='box_5' 					toField='rotation'/>
+	
+	
+	//////////////////
+	// ImageBox - 6 //
+	//////////////////
+	<Transform translation='1.5 0.5 0'><Group USE='rahmen'/></Transform>
+	<Transform DEF='box_6' translation='1.5 0.5 0'>
+		<Shape>
+	    	<Box
+				size='2 2 0.1'
+				useGeoCache='TRUE'
+				solid='TRUE'
+				lit='TRUE'
+				resolution='1'
+				multiResolutionLevel='1'
+				invalidateVolume='FALSE'
+				normalUpdateMode='nice'
+				cacheMode='auto'
+				optimizationMode='auto'
+				logFeature=''
+			/>
+			<Appearance>
+				<Material diffuseColor='0.2 0.3 0.2'/>
+				<ImageTexture DEF='image_change_6' url="../img/standard.jpg"/>
+			</Appearance>
+		</Shape>
+		
+		<TouchSensor DEF='touch_me_6'/>
+		
+		<TimeSensor DEF='zeit_box_6_links' cycleInterval='3' loop='false'/>
+		<TimeSensor DEF='zeit_box_6_rechts' cycleInterval='3' loop='false'/>
+		
+		<OrientationInterpolator DEF='drehung_box_6_rechts' 
+			key='0 0.25 0.5 0.75 1'
+			keyValue='0 1 0 0, 0 1 0 1.57, 0 1 0 3.14159, 0 1 0 3.14159, 0 1 0 3.14159'
+		/>
+		<OrientationInterpolator DEF='drehung_box_6_links' 
+			key='0 0.25 0.5 0.75 1'
+			keyValue='0 1 0 3.14159, 0 1 0 1.57, 0 1 0 0, 0 1 0 0, 0 1 0 0'
+		/>
+	</Transform>
+	//rechts drehen
+	<ROUTE fromNode='touch_me_6' 			fromField='touchTime'			toNode='zeit_box_6_rechts'		toField='startTime'/>
+ 	<ROUTE fromNode='zeit_box_6_rechts' 	fromField='fraction_changed' 	toNode='drehung_box_6_rechts'	toField='set_fraction'/>
+ 	<ROUTE fromNode='drehung_box_6_rechts' 	fromField='value_changed'		toNode='box_6' 					toField='rotation'/>
+	//links drehen
+ 	<ROUTE fromNode='zeit_box_6_links' 		fromField='fraction_changed' 	toNode='drehung_box_6_links' 	toField='set_fraction'/>
+ 	<ROUTE fromNode='drehung_box_6_links' 	fromField='value_changed' 		toNode='box_6' 					toField='rotation'/>
+	
+	
+	//////////////////
+	// ImageBox - 7 //
+	//////////////////
+	<Transform translation='4.5 0.5 0'><Group USE='rahmen'/></Transform>
+	<Transform DEF='box_7' translation='4.5 0.5 0'>
+		<Shape>
+	    	<Box 
+				size='2 2 0.1'
+				useGeoCache='TRUE'
+				solid='TRUE'
+				lit='TRUE'
+				resolution='1'
+				multiResolutionLevel='1'
+				invalidateVolume='FALSE'
+				normalUpdateMode='nice'
+				cacheMode='auto'
+				optimizationMode='auto'
+				logFeature=''
+			/>
+			<Appearance>
+				<Material diffuseColor='0.2 0.3 0.2'/>
+				<ImageTexture DEF='image_change_7' url="../img/standard.jpg"/>
+			</Appearance>
+		</Shape>
+		
+		<TouchSensor DEF='touch_me_7'/>
+		
+		<TimeSensor DEF='zeit_box_7_links' cycleInterval='3' loop='false'/>
+		<TimeSensor DEF='zeit_box_7_rechts' cycleInterval='3' loop='false'/>
+		
+		<OrientationInterpolator DEF='drehung_box_7_rechts' 
+			key='0 0.25 0.5 0.75 1'
+			keyValue='0 1 0 0, 0 1 0 1.57, 0 1 0 3.14159, 0 1 0 3.14159, 0 1 0 3.14159'
+		/>
+		<OrientationInterpolator DEF='drehung_box_7_links' 
+			key='0 0.25 0.5 0.75 1'
+			keyValue='0 1 0 3.14159, 0 1 0 1.57, 0 1 0 0, 0 1 0 0, 0 1 0 0'
+		/>
+	</Transform>
+	//rechts drehen
+	<ROUTE fromNode='touch_me_7' 			fromField='touchTime' 			toNode='zeit_box_7_rechts'		toField='startTime'/>
+ 	<ROUTE fromNode='zeit_box_7_rechts'		fromField='fraction_changed' 	toNode='drehung_box_7_rechts'	toField='set_fraction'/>
+ 	<ROUTE fromNode='drehung_box_7_rechts'	fromField='value_changed'		toNode='box_7' 					toField='rotation'/>
+	//links drehen
+ 	<ROUTE fromNode='zeit_box_7_links' 		fromField='fraction_changed' 	toNode='drehung_box_7_links' 	toField='set_fraction'/>
+ 	<ROUTE fromNode='drehung_box_7_links' 	fromField='value_changed' 		toNode='box_7' 					toField='rotation'/>
+	
+	
+	//////////////////
+	// ImageBox - 8 //
+	//////////////////
+	<Transform translation='-4.5 -2 0'><Group USE='rahmen'/></Transform>
+	<Transform DEF='box_8' translation='-4.5 -2 0'>
+		<Shape>
+	    	<Box 
+				size='2 2 0.1'
+				useGeoCache='TRUE'
+				solid='TRUE'
+				lit='TRUE'
+				resolution='1'
+				multiResolutionLevel='1'
+				invalidateVolume='FALSE'
+				normalUpdateMode='nice'
+				cacheMode='auto'
+				optimizationMode='auto'
+				logFeature=''
+			/>
+			<Appearance>
+				<Material diffuseColor='0.2 0.3 0.2'/>
+				<ImageTexture DEF='image_change_8' url="../img/standard.jpg"/>
+			</Appearance>
+		</Shape>
+		
+		<TouchSensor DEF='touch_me_8'/>
+		
+		<TimeSensor DEF='zeit_box_8_links' cycleInterval='3' loop='false'/>
+		<TimeSensor DEF='zeit_box_8_rechts' cycleInterval='3' loop='false'/>
+		
+		<OrientationInterpolator DEF='drehung_box_8_rechts' 
+			key='0 0.25 0.5 0.75 1'
+			keyValue='0 1 0 0, 0 1 0 1.57, 0 1 0 3.14159, 0 1 0 3.14159, 0 1 0 3.14159'
+		/>
+		<OrientationInterpolator DEF='drehung_box_8_links' 
+			key='0 0.25 0.5 0.75 1'
+			keyValue='0 1 0 3.14159, 0 1 0 1.57, 0 1 0 0, 0 1 0 0, 0 1 0 0'
+		/>
+	</Transform>
+	//rechts drehen
+	<ROUTE fromNode='touch_me_8' 			fromField='touchTime' 			toNode='zeit_box_8_rechts'		toField='startTime'/>
+ 	<ROUTE fromNode='zeit_box_8_rechts'		fromField='fraction_changed' 	toNode='drehung_box_8_rechts'	toField='set_fraction'/>
+ 	<ROUTE fromNode='drehung_box_8_rechts' 	fromField='value_changed' 		toNode='box_8' 					toField='rotation'/>
+	//links drehen
+ 	<ROUTE fromNode='zeit_box_8_links' 		fromField='fraction_changed' 	toNode='drehung_box_8_links' 	toField='set_fraction'/>
+ 	<ROUTE fromNode='drehung_box_8_links' 	fromField='value_changed' 		toNode='box_8' 					toField='rotation'/>
+	
+	
+	//////////////////
+	// ImageBox - 9 //
+	//////////////////
+	<Transform translation='-1.5 -2 0'><Group USE='rahmen'/></Transform>
+	<Transform DEF='box_9' translation='-1.5 -2 0'>
+		<Shape>
+	    	<Box
+				size='2 2 0.1'
+				useGeoCache='TRUE'
+				solid='TRUE'
+				lit='TRUE'
+				resolution='1'
+				multiResolutionLevel='1'
+				invalidateVolume='FALSE'
+				normalUpdateMode='nice'
+				cacheMode='auto'
+				optimizationMode='auto'
+				logFeature=''
+			/>
+			<Appearance>
+				<Material diffuseColor='0.2 0.3 0.2'/>
+				<ImageTexture DEF='image_change_9' url="../img/standard.jpg"/>
+			</Appearance>
+		</Shape>
+		
+		<TouchSensor DEF='touch_me_9'/>
+		
+		<TimeSensor DEF='zeit_box_9_links' cycleInterval='3' loop='false'/>
+		<TimeSensor DEF='zeit_box_9_rechts' cycleInterval='3' loop='false'/>
+		
+		<OrientationInterpolator DEF='drehung_box_9_rechts' 
+			key='0 0.25 0.5 0.75 1'
+			keyValue='0 1 0 0, 0 1 0 1.57, 0 1 0 3.14159, 0 1 0 3.14159, 0 1 0 3.14159'
+		/>
+		<OrientationInterpolator DEF='drehung_box_9_links' 
+			key='0 0.25 0.5 0.75 1'
+			keyValue='0 1 0 3.14159, 0 1 0 1.57, 0 1 0 0, 0 1 0 0, 0 1 0 0'
+		/>
+	</Transform>
+	//rechts drehen
+	<ROUTE fromNode='touch_me_9' 			fromField='touchTime' 			toNode='zeit_box_9_rechts'		toField='startTime'/>
+ 	<ROUTE fromNode='zeit_box_9_rechts' 	fromField='fraction_changed' 	toNode='drehung_box_9_rechts'	toField='set_fraction'/>
+ 	<ROUTE fromNode='drehung_box_9_rechts' 	fromField='value_changed' 		toNode='box_9' 					toField='rotation'/>
+	//links drehen
+ 	<ROUTE fromNode='zeit_box_9_links' 		fromField='fraction_changed' 	toNode='drehung_box_9_links' 	toField='set_fraction'/>
+ 	<ROUTE fromNode='drehung_box_9_links' 	fromField='value_changed' 		toNode='box_9' 					toField='rotation'/>
+	
+	
+	//////////////////
+	// ImageBox - 10 //
+	//////////////////
+	<Transform translation='1.5 -2 0'><Group USE='rahmen'/></Transform>
+	<Transform DEF='box_10' translation='1.5 -2 0'>
+		<Shape>
+	    	<Box
+				size='2 2 0.1'
+				useGeoCache='TRUE'
+				solid='TRUE'
+				lit='TRUE'
+				resolution='1'
+				multiResolutionLevel='1'
+				invalidateVolume='FALSE'
+				normalUpdateMode='nice'
+				cacheMode='auto'
+				optimizationMode='auto'
+				logFeature=''
+			/>
+			<Appearance>
+				<Material diffuseColor='0.2 0.3 0.2'/>
+				<ImageTexture DEF='image_change_10' url="../img/standard.jpg"/>
+			</Appearance>
+		</Shape>
+		
+		<TouchSensor DEF='touch_me_10'/>
+		
+		<TimeSensor DEF='zeit_box_10_links' cycleInterval='3' loop='false'/>
+		<TimeSensor DEF='zeit_box_10_rechts' cycleInterval='3' loop='false'/>
+		
+		<OrientationInterpolator DEF='drehung_box_10_rechts' 
+			key='0 0.25 0.5 0.75 1'
+			keyValue='0 1 0 0, 0 1 0 1.57, 0 1 0 3.14159, 0 1 0 3.14159, 0 1 0 3.14159'
+		/>
+		<OrientationInterpolator DEF='drehung_box_10_links' 
+			key='0 0.25 0.5 0.75 1'
+			keyValue='0 1 0 3.14159, 0 1 0 1.57, 0 1 0 0, 0 1 0 0, 0 1 0 0'
+		/>
+	</Transform>
+	//rechts drehen
+	<ROUTE fromNode='touch_me_10' 			fromField='touchTime' 			toNode='zeit_box_10_rechts'		toField='startTime'/>
+ 	<ROUTE fromNode='zeit_box_10_rechts' 	fromField='fraction_changed' 	toNode='drehung_box_10_rechts'	toField='set_fraction'/>
+ 	<ROUTE fromNode='drehung_box_10_rechts' 	fromField='value_changed' 		toNode='box_10' 					toField='rotation'/>
+	//links drehen
+ 	<ROUTE fromNode='zeit_box_10_links' 		fromField='fraction_changed' 	toNode='drehung_box_10_links' 	toField='set_fraction'/>
+ 	<ROUTE fromNode='drehung_box_10_links' 	fromField='value_changed' 		toNode='box_10' 					toField='rotation'/>
+	
+	
+	///////////////////
+	// ImageBox - 11 //
+	///////////////////
+	<Transform translation='4.5 -2 0'><Group USE='rahmen'/></Transform>
+	<Transform DEF='box_11' translation='4.5 -2 0'>
+		<Shape>
+	    	<Box
+				size='2 2 0.1'
+				useGeoCache='TRUE'
+				solid='TRUE'
+				lit='TRUE'
+				resolution='1'
+				multiResolutionLevel='1'
+				invalidateVolume='FALSE'
+				normalUpdateMode='nice'
+				cacheMode='auto'
+				optimizationMode='auto'
+				logFeature=''
+			/>
+			<Appearance>
+				<Material diffuseColor='0.2 0.3 0.2'/>
+				<ImageTexture DEF='image_change_11' url="../img/standard.jpg"/>
+			</Appearance>
+		</Shape>
+		
+		<TouchSensor DEF='touch_me_11'/>
+		
+		<TimeSensor DEF='zeit_box_11_links' cycleInterval='3' loop='false'/>
+		<TimeSensor DEF='zeit_box_11_rechts' cycleInterval='3' loop='false'/>
+		
+		<OrientationInterpolator DEF='drehung_box_11_rechts' 
+			key='0 0.25 0.5 0.75 1'
+			keyValue='0 1 0 0, 0 1 0 1.57, 0 1 0 3.14159, 0 1 0 3.14159, 0 1 0 3.14159'
+		/>
+		<OrientationInterpolator DEF='drehung_box_11_links' 
+			key='0 0.25 0.5 0.75 1'
+			keyValue='0 1 0 3.14159, 0 1 0 1.57, 0 1 0 0, 0 1 0 0, 0 1 0 0'
+		/>
+	</Transform>
+	//rechts drehen
+	<ROUTE fromNode='touch_me_11' 			fromField='touchTime' 			toNode='zeit_box_11_rechts'		toField='startTime'/>
+ 	<ROUTE fromNode='zeit_box_11_rechts' 	fromField='fraction_changed' 	toNode='drehung_box_11_rechts'	toField='set_fraction'/>
+ 	<ROUTE fromNode='drehung_box_11_rechts' 	fromField='value_changed' 		toNode='box_11' 					toField='rotation'/>
+	//links drehen
+ 	<ROUTE fromNode='zeit_box_11_links' 		fromField='fraction_changed' 	toNode='drehung_box_11_links' 	toField='set_fraction'/>
+ 	<ROUTE fromNode='drehung_box_11_links' 	fromField='value_changed' 		toNode='box_11' 					toField='rotation'/>
+	
+
+	//////////////
+	// Knoepf-L //
+	//////////////
+	<Transform DEF="button_links_transform" scale="0.7 0.4 0.1" translation="-6.5 -4 0">
+		<Shape>
+			<Sphere DEF='button_links'/>
+			<Appearance>
+				<Material DEF='button_L_material'
+				diffuseColor='0.1 0.0 0.0'
+				ambientIntensity='0.2'
+				shininess='1'
+				specularColor='1 1 1'
+			/>
+			</Appearance>
+		</Shape>
+		<TouchSensor DEF='touch_button_L'/>
+	</Transform>
+	// soll dem Benutzer anzeigen dass er zurueck geht
+	<Transform translation="-6.6 -4.2 0.08">
+		<Text string="-"/>
+	</Transform>
+	
+	
+	//////////////
+	// Knoepf-R //
+	//////////////
+	<Transform scale="0.7 0.4 0.1" translation="6.5 -4 0">
+		<Shape>
+			<Sphere DEF='button_rechts'/>
+			<Appearance>
+				<Material DEF='button_R_material'
+				diffuseColor='0.1 0.0 0.0'
+				ambientIntensity='0.2'
+				shininess='1'
+				specularColor='1 1 1'
+			/>
+			</Appearance>
+		</Shape>
+		<TouchSensor DEF='touch_button_R'/>
+	</Transform>
+	// soll dem Benutzer anzeigen dass er vor geht
+	<Transform translation="6.3 -4.3 0.05">
+		<Text string="+"/>
+	</Transform>
+	
+	//////////////
+	// Knoepf-Move //
+	//////////////
+	<Transform DEF='button_move_transform' scale="0.7 0.4 0.1" translation="0 -4 0">
+		<Shape>
+			<Sphere DEF='button_move'/>
+			<Appearance>
+				<Material
+				diffuseColor='1 0.0 0.0'
+				ambientIntensity='0.2'
+				shininess='0.5'
+				specularColor='1 1 1'
+				/>
+			</Appearance>
+		</Shape>
+	</Transform>
+	// soll dem Benutzer anzeigen dass er den Button bewegen kann
+	<Transform DEF='button_move_text' scale="0.4 0.4 1" translation="-0.4 -4.1 0.2">
+		<Text string="Move"/>
+	</Transform>
+	
+	////////////////////////////////
+	// Animation fuer die Buttons //
+	////////////////////////////////
+	<TimeSensor DEF="Zeit_buttons" cycleInterval="3" loop="true"/>
+	<ScalarInterpolator DEF='licht_bewegung_buttons' key='0, 0.5, 1.0' keyValue='0.2, 0.5, 0.3'/>
+	
+	<ROUTE fromNode='Zeit_buttons' fromField='fraction_changed' toNode='licht_bewegung_buttons' 	toField='set_fraction'/>
+	<ROUTE fromNode='licht_bewegung_buttons' fromField='value_changed' toNode='button_L_material' 	toField='transparency'/>
+	<ROUTE fromNode='licht_bewegung_buttons' fromField='value_changed' toNode='button_R_material' 	toField='transparency'/>
+	
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	
+	///////////////////////////////
+	// Script fuer den Java-Code //
+	///////////////////////////////
+    <Script DEF='script' url="MyCode.class" directOutput='true' mustEvaluate='true'>
+		<field name='tagnotice_text' 	accessType='outputOnly' 	type='MFString'/>
+		<field name='keyPressed' 			accessType='inputOnly' 	type='SFInt32'/>
+	
+		//wenn ein Sensor eines Knoten aktiv/inaktiv wird (i.e. der Sensor gedrueckt/losgelassen wurde)
+		<field name='isActive_links'	accessType='inputOnly'		type='SFBool'/>
+		<field name='isActive_rechts'	accessType='inputOnly'		type='SFBool'/>
+		
+		<field name='isActive_0' 		accessType='inputOnly'	 	type='SFBool'/>
+		<field name='isActive_1' 		accessType='inputOnly'	 	type='SFBool'/>
+		<field name='isActive_2' 		accessType='inputOnly' 		type='SFBool'/>
+		<field name='isActive_3' 		accessType='inputOnly' 		type='SFBool'/>
+		<field name='isActive_4' 		accessType='inputOnly' 		type='SFBool'/>
+		<field name='isActive_5' 		accessType='inputOnly' 		type='SFBool'/>
+		<field name='isActive_6' 		accessType='inputOnly' 		type='SFBool'/>
+		<field name='isActive_7' 		accessType='inputOnly' 		type='SFBool'/>
+		<field name='isActive_8' 		accessType='inputOnly' 		type='SFBool'/>
+		<field name='isActive_9' 		accessType='inputOnly' 		type='SFBool'/>	  
+		<field name='isActive_10' 		accessType='inputOnly' 		type='SFBool'/>	  
+		<field name='isActive_11' 		accessType='inputOnly' 		type='SFBool'/>	  
+		
+		//die neuen Bilderurls
+		<field name='url_change_0' 	accessType='outputOnly' 	type='SFString'/>
+		<field name='url_change_1' 	accessType='outputOnly' 	type='SFString'/>
+		<field name='url_change_2' 	accessType='outputOnly' 	type='SFString'/>
+		<field name='url_change_3' 	accessType='outputOnly' 	type='SFString'/>
+		<field name='url_change_4' 	accessType='outputOnly' 	type='SFString'/>
+		<field name='url_change_5' 	accessType='outputOnly' 	type='SFString'/>
+		<field name='url_change_6' 	accessType='outputOnly' 	type='SFString'/>
+		<field name='url_change_7' 	accessType='outputOnly' 	type='SFString'/>
+		<field name='url_change_8' 	accessType='outputOnly' 	type='SFString'/>
+		<field name='url_change_9' 	accessType='outputOnly' 	type='SFString'/>
+		<field name='url_change_10' accessType='outputOnly' 	type='SFString'/>
+		<field name='url_change_11' accessType='outputOnly' 	type='SFString'/>
+		
+		//Temporaere max-min transformationen 
+		<field name='box_0_zeit_minmax' accessType='outputOnly' 	type='SFTime'/>
+		<field name='box_0_groesse' 	accessType='outputOnly' 	type='MFVec3f'/>
+		<field name='box_0_position' 	accessType='outputOnly' 	type='MFVec3f'/>
+		
+		//Groesse der Bildboxen
+		<field name='box_0_scale' 		accessType='outputOnly'	 	type='SFVec3f'/>
+		<field name='box_1_scale' 		accessType='outputOnly'	 	type='SFVec3f'/>
+		<field name="box_2_scale" 		accessType='outputOnly' 	type='SFVec3f'/>
+		<field name="box_3_scale" 		accessType='outputOnly' 	type='SFVec3f'/>
+		<field name="box_4_scale" 		accessType='outputOnly' 	type='SFVec3f'/>
+		<field name="box_5_scale" 		accessType='outputOnly' 	type='SFVec3f'/>
+		<field name="box_6_scale" 		accessType='outputOnly' 	type='SFVec3f'/>
+		<field name="box_7_scale" 		accessType='outputOnly' 	type='SFVec3f'/>
+		<field name="box_8_scale" 		accessType='outputOnly' 	type='SFVec3f'/>
+		<field name="box_9_scale" 		accessType='outputOnly' 	type='SFVec3f'/>
+		<field name="box_10_scale" 		accessType='outputOnly' 	type='SFVec3f'/>
+		<field name="box_11_scale" 		accessType='outputOnly' 	type='SFVec3f'/>
+		
+		//verschieben der Bildboxen
+		<field name='box_0_translation' 	accessType='outputOnly'	 	type='SFVec3f'/>
+		<field name='box_1_translation' 	accessType='outputOnly'	 	type='SFVec3f'/>
+		<field name='box_2_translation' 	accessType='outputOnly'	 	type='SFVec3f'/>
+		<field name='box_3_translation' 	accessType='outputOnly'	 	type='SFVec3f'/>
+		<field name='box_4_translation' 	accessType='outputOnly'	 	type='SFVec3f'/>
+		<field name='box_5_translation' 	accessType='outputOnly'	 	type='SFVec3f'/>
+		<field name='box_6_translation' 	accessType='outputOnly'	 	type='SFVec3f'/>
+		<field name='box_7_translation' 	accessType='outputOnly'	 	type='SFVec3f'/>
+		<field name='box_8_translation' 	accessType='outputOnly'	 	type='SFVec3f'/>
+		<field name='box_9_translation' 	accessType='outputOnly'	 	type='SFVec3f'/>
+		<field name='box_10_translation' 	accessType='outputOnly'	 	type='SFVec3f'/>
+		<field name='box_11_translation' 	accessType='outputOnly'	 	type='SFVec3f'/>
+
+		// sagt Java bescheid, wenn mit der Kinect der rechte/linke Button gedrueckt wurde
+		<field name='kinect_links_B'	accessType='inputOnly'		type='SFBool'/>
+		<field name='kinect_rechts_B'	accessType='inputOnly'		type='SFBool'/>
+    </Script>
+	
+	// Event gibt an, wenn einer der Spezialbuttons auf dem Keyboard gedrueckt wird
+	<ROUTE fromNode='keyboard' 	fromField='actionKeyPress' 		toNode='script' 	toField='keyPressed'/>
+	// route erlaub Java dem Benutzer anzuzeigen welche Flickr-Tags genutzt wurden
+	<ROUTE fromNode='script' fromField='tagnotice_text' toNode='tagnotice' 	  toField='set_string'/>
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	// Routen zur Bedienung der Boxen: Sagt Java bescheid, wenn der Touchsensor gedrucket wird //
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	<ROUTE fromNode='touch_button_L'	fromField='isActive' 	toNode='script' toField='isActive_links'/>
+	<ROUTE fromNode='touch_button_R'	fromField='isActive' 	toNode='script' toField='isActive_rechts'/>
+	
+	<ROUTE fromNode='touch_me_0' 		fromField='isActive' 	toNode='script' toField='isActive_0'/>
+    <ROUTE fromNode='touch_me_1' 		fromField='isActive' 	toNode='script' toField='isActive_1'/>
+	<ROUTE fromNode='touch_me_2' 		fromField='isActive' 	toNode='script' toField='isActive_2'/>
+	<ROUTE fromNode='touch_me_3' 		fromField='isActive'	toNode='script' toField='isActive_3'/>
+	<ROUTE fromNode='touch_me_4' 		fromField='isActive' 	toNode='script' toField='isActive_4'/>
+	<ROUTE fromNode='touch_me_5' 		fromField='isActive' 	toNode='script' toField='isActive_5'/>
+	<ROUTE fromNode='touch_me_6' 		fromField='isActive' 	toNode='script' toField='isActive_6'/>
+	<ROUTE fromNode='touch_me_7' 		fromField='isActive' 	toNode='script' toField='isActive_7'/>
+	<ROUTE fromNode='touch_me_8' 		fromField='isActive' 	toNode='script' toField='isActive_8'/>
+	<ROUTE fromNode='touch_me_9' 		fromField='isActive' 	toNode='script' toField='isActive_9'/>
+	<ROUTE fromNode='touch_me_10' 		fromField='isActive' 	toNode='script' toField='isActive_10'/>
+	<ROUTE fromNode='touch_me_11' 		fromField='isActive' 	toNode='script' toField='isActive_11'/>
+	
+	//Zum Aendern der urls der Bilder
+	<ROUTE fromNode='script' fromField='url_change_0' toNode='image_change_0' toField='set_url'/>
+    <ROUTE fromNode='script' fromField='url_change_1' toNode='image_change_1' toField='set_url'/>
+	<ROUTE fromNode='script' fromField='url_change_2' toNode='image_change_2' toField='set_url'/>
+	<ROUTE fromNode='script' fromField='url_change_3' toNode='image_change_3' toField='set_url'/>
+	<ROUTE fromNode='script' fromField='url_change_4' toNode='image_change_4' toField='set_url'/>
+	<ROUTE fromNode='script' fromField='url_change_5' toNode='image_change_5' toField='set_url'/>
+	<ROUTE fromNode='script' fromField='url_change_6' toNode='image_change_6' toField='set_url'/>
+	<ROUTE fromNode='script' fromField='url_change_7' toNode='image_change_7' toField='set_url'/>
+	<ROUTE fromNode='script' fromField='url_change_8' toNode='image_change_8' toField='set_url'/>
+	<ROUTE fromNode='script' fromField='url_change_9' toNode='image_change_9' toField='set_url'/>
+	<ROUTE fromNode='script' fromField='url_change_10' toNode='image_change_10' toField='set_url'/>
+	<ROUTE fromNode='script' fromField='url_change_11' toNode='image_change_11' toField='set_url'/>
+	
+	///////////////////////////////////////////////////////////
+	// Routen fuer das vergroessern der Bilder beim Klicken //
+	///////////////////////////////////////////////////////////
+	<ROUTE fromNode='script' 	fromField='box_0_scale' 		toNode='box_0' toField='scale'/>
+	<ROUTE fromNode='script' 	fromField='box_1_scale' 		toNode='box_1' toField='scale'/>
+	<ROUTE fromNode='script' 	fromField='box_2_scale' 		toNode='box_2' toField='scale'/>
+	<ROUTE fromNode='script' 	fromField='box_3_scale' 		toNode='box_3' toField='scale'/>
+	<ROUTE fromNode='script' 	fromField='box_4_scale' 		toNode='box_4' toField='scale'/>
+	<ROUTE fromNode='script' 	fromField='box_5_scale' 		toNode='box_5' toField='scale'/>
+	<ROUTE fromNode='script' 	fromField='box_6_scale' 		toNode='box_6' toField='scale'/>
+	<ROUTE fromNode='script' 	fromField='box_7_scale' 		toNode='box_7' toField='scale'/>
+	<ROUTE fromNode='script' 	fromField='box_8_scale' 		toNode='box_8' toField='scale'/>
+	<ROUTE fromNode='script' 	fromField='box_9_scale' 		toNode='box_9' toField='scale'/>
+	<ROUTE fromNode='script' 	fromField='box_10_scale' 		toNode='box_10' toField='scale'/>
+	<ROUTE fromNode='script' 	fromField='box_11_scale' 		toNode='box_11' toField='scale'/>
+	
+	<ROUTE fromNode='script' 	fromField='box_0_translation' 	toNode='box_0' toField='translation'/>
+	<ROUTE fromNode='script' 	fromField='box_1_translation' 	toNode='box_1' toField='translation'/>
+	<ROUTE fromNode='script' 	fromField='box_2_translation' 	toNode='box_2' toField='translation'/>
+	<ROUTE fromNode='script' 	fromField='box_3_translation' 	toNode='box_3' toField='translation'/>
+	<ROUTE fromNode='script' 	fromField='box_4_translation' 	toNode='box_4' toField='translation'/>
+	<ROUTE fromNode='script' 	fromField='box_5_translation' 	toNode='box_5' toField='translation'/>
+	<ROUTE fromNode='script' 	fromField='box_6_translation' 	toNode='box_6' toField='translation'/>
+	<ROUTE fromNode='script' 	fromField='box_7_translation' 	toNode='box_7' toField='translation'/>
+	<ROUTE fromNode='script' 	fromField='box_8_translation' 	toNode='box_8' toField='translation'/>
+	<ROUTE fromNode='script' 	fromField='box_9_translation' 	toNode='box_9' toField='translation'/>
+	<ROUTE fromNode='script' 	fromField='box_10_translation' 	toNode='box_10' toField='translation'/>
+	<ROUTE fromNode='script' 	fromField='box_11_translation' 	toNode='box_11' toField='translation'/>
+	
+	//max/min per Signal
+	<ROUTE fromNode='script' 	fromField='box_0_zeit_minmax' 	toNode='box_0_zeit_minmax' toField='startTime'/>
+	<ROUTE fromNode='script' 	fromField='box_0_position' 		toNode='box_0_position' toField='keyValue'/>
+	<ROUTE fromNode='script' 	fromField='box_0_groesse' 		toNode='box_0_groesse' toField='keyValue'/>
+	
+	
+	/////////////////////////////////////////////////////////////
+	// Diese Router dienen nur fuer die Animation mit der Maus //
+	////////////////////////////////////////////////////////////////////////////////////
+	// Wenn der linke Button gedrueckt wird sollen sich alle Bilder nach links drehen //
+	////////////////////////////////////////////////////////////////////////////////////
+	<ROUTE fromNode='touch_button_L' 		fromField='touchTime' 			toNode='zeit_box_0_links'		toField='startTime'/>
+	<ROUTE fromNode='touch_button_L' 		fromField='touchTime' 			toNode='zeit_box_1_links' 		toField='startTime'/>
+	<ROUTE fromNode='touch_button_L' 		fromField='touchTime' 			toNode='zeit_box_2_links' 		toField='startTime'/>
+	<ROUTE fromNode='touch_button_L' 		fromField='touchTime' 			toNode='zeit_box_3_links' 		toField='startTime'/>
+	<ROUTE fromNode='touch_button_L' 		fromField='touchTime' 			toNode='zeit_box_4_links' 		toField='startTime'/>
+	<ROUTE fromNode='touch_button_L' 		fromField='touchTime' 			toNode='zeit_box_5_links' 		toField='startTime'/>
+	<ROUTE fromNode='touch_button_L' 		fromField='touchTime' 			toNode='zeit_box_6_links' 		toField='startTime'/>
+	<ROUTE fromNode='touch_button_L' 		fromField='touchTime' 			toNode='zeit_box_7_links' 		toField='startTime'/>
+	<ROUTE fromNode='touch_button_L' 		fromField='touchTime' 			toNode='zeit_box_8_links' 		toField='startTime'/>
+	<ROUTE fromNode='touch_button_L' 		fromField='touchTime' 			toNode='zeit_box_9_links'  		toField='startTime'/>
+	<ROUTE fromNode='touch_button_L' 		fromField='touchTime' 			toNode='zeit_box_10_links' 		toField='startTime'/>
+	<ROUTE fromNode='touch_button_L' 		fromField='touchTime' 			toNode='zeit_box_11_links'		toField='startTime'/>
+	
+	////////////////////////////////////////////////////////////////////////////////////
+	// Wenn der rechte Button gedrueckt wird sollen sich alle Bilder nach rechts drehen //
+	////////////////////////////////////////////////////////////////////////////////////
+	<ROUTE fromNode='touch_button_R' 		fromField='touchTime' 			toNode='zeit_box_0_rechts' 		toField='startTime'/>
+	<ROUTE fromNode='touch_button_R' 		fromField='touchTime' 			toNode='zeit_box_1_rechts' 		toField='startTime'/>
+	<ROUTE fromNode='touch_button_R' 		fromField='touchTime' 			toNode='zeit_box_2_rechts' 		toField='startTime'/>
+	<ROUTE fromNode='touch_button_R' 		fromField='touchTime' 			toNode='zeit_box_3_rechts' 		toField='startTime'/>
+	<ROUTE fromNode='touch_button_R' 		fromField='touchTime' 			toNode='zeit_box_4_rechts' 		toField='startTime'/>
+	<ROUTE fromNode='touch_button_R' 		fromField='touchTime' 			toNode='zeit_box_5_rechts' 		toField='startTime'/>
+	<ROUTE fromNode='touch_button_R' 		fromField='touchTime' 			toNode='zeit_box_6_rechts' 		toField='startTime'/>
+	<ROUTE fromNode='touch_button_R' 		fromField='touchTime' 			toNode='zeit_box_7_rechts' 		toField='startTime'/>
+	<ROUTE fromNode='touch_button_R' 		fromField='touchTime' 			toNode='zeit_box_8_rechts' 		toField='startTime'/>
+	<ROUTE fromNode='touch_button_R' 		fromField='touchTime' 			toNode='zeit_box_9_rechts' 		toField='startTime'/>
+	<ROUTE fromNode='touch_button_R' 		fromField='touchTime' 			toNode='zeit_box_10_rechts' 	toField='startTime'/>
+	<ROUTE fromNode='touch_button_R' 		fromField='touchTime' 			toNode='zeit_box_11_rechts' 	toField='startTime'/>
+	
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Script zur Bedienung der Kinect 																	 //
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	<Script DEF='script_kinect' url="KinectScript.js" directOutput='true' 	mustEvaluate='true'>
+        /////////////////////////////////////////
+		// Kinect-Interaction                  //
+		/////////////////////////////////////////
+		<field name='hand_changed' 			accessType='inputOnly' 			type='MFVec3f'/>
+		<field name='users_changed' 		accessType='inputOnly' 			type='SFInt32'/>
+		<field name='gesture_recognized' 	accessType='inputOnly' 		type='SFString'/>
+		<field name='skeleton_orientation' 	accessType='inputOnly' 		type='MFRotation'/>
+		
+        <field name='hand_gruppe'			accessType='initializeOnly' 	type='SFNode'><Group USE='hand_gruppe'/> </field>
+		<field name='isKinectActive'		accessType='outputOnly'			type='SFNode'><Shape USE='isKinectActive'/></field>
+		<field name='plane_box'				accessType='outputOnly'			type='SFNode'><Shape USE='plane_box'/></field>
+		// Zeigen die erkannten Gesten an
+		<field name='button_geste_farbe'			accessType='outputOnly'		type='SFColor'/>
+		<field name='button_geste_text'				accessType='outputOnly'			type='MFString'/>
+		
+		<field name='vp_position'				accessType='outputOnly'			type='SFVec3f'/>
+		<field name='vp_orientation'				accessType='outputOnly'			type='SFRotation'/>
+		
+		/////////////////////////////////////////
+		// fuer die Interaktion mit den Haende //
+		/////////////////////////////////////////
+		<field name='button_R'					accessType='outputOnly' 		type='SFBool'/>
+		<field name='button_L'					accessType='outputOnly'			type='SFBool'/>
+		
+		// Um den Button verschieben zu koennen
+		<field name='button_move_position'		accessType='inputOutput'		type='SFVec3f' value="-3 -3 2"/>
+		<field name='button_move_text'				accessType='inputOutput'		type='SFNode'><Shape USE='button_move_text'/></field>
+		
+		
+		//////////////////////////////////////////////////////////////////
+		// fuer die Animationen mit den Buttons und der einzelnen Boxen //
+		//////////////////////////////////////////////////////////////////
+		<field name='button_R_time'			accessType='outputOnly'			type='SFTime'/>
+		<field name='button_L_time'			accessType='outputOnly'			type='SFTime'/>
+		<field name='kinect_box_0_time'		accessType='outputOnly'			type='SFTime'/>
+		<field name='kinect_box_1_time'		accessType='outputOnly'			type='SFTime'/>
+		<field name='kinect_box_2_time'		accessType='outputOnly'			type='SFTime'/>
+		<field name='kinect_box_3_time'		accessType='outputOnly'			type='SFTime'/>
+		<field name='kinect_box_4_time'		accessType='outputOnly'			type='SFTime'/>
+		<field name='kinect_box_5_time'		accessType='outputOnly'			type='SFTime'/>
+		<field name='kinect_box_6_time'		accessType='outputOnly'			type='SFTime'/>
+		<field name='kinect_box_7_time'		accessType='outputOnly'			type='SFTime'/>
+		<field name='kinect_box_8_time'		accessType='outputOnly'			type='SFTime'/>
+		<field name='kinect_box_9_time'		accessType='outputOnly'			type='SFTime'/>
+		<field name='kinect_box_10_time'	accessType='outputOnly'			type='SFTime'/>
+		<field name='kinect_box_11_time'	accessType='outputOnly'			type='SFTime'/>
+		
+		//////////////////////////////////////
+		// fuer das Vergroessern der Bilder //
+		//////////////////////////////////////
+		<field name='box_0_scale' 			accessType='outputOnly'	 	type='SFVec3f'/>
+		<field name='box_1_scale' 			accessType='outputOnly'	 	type='SFVec3f'/>
+		<field name='box_2_scale' 			accessType='outputOnly' 	type='SFVec3f'/>
+		<field name='box_3_scale' 			accessType='outputOnly' 	type='SFVec3f'/>
+		<field name='box_4_scale' 			accessType='outputOnly' 	type='SFVec3f'/>
+		<field name='box_5_scale' 			accessType='outputOnly' 	type='SFVec3f'/>
+		<field name='box_6_scale' 			accessType='outputOnly' 	type='SFVec3f'/>
+		<field name='box_7_scale' 			accessType='outputOnly' 	type='SFVec3f'/>
+		<field name='box_8_scale' 			accessType='outputOnly' 	type='SFVec3f'/>
+		<field name='box_9_scale' 			accessType='outputOnly' 	type='SFVec3f'/>
+		<field name='box_10_scale' 			accessType='outputOnly' 	type='SFVec3f'/>
+		<field name='box_11_scale' 			accessType='outputOnly' 	type='SFVec3f'/>
+		//////////////////////////////////////
+		// fuer das Verschieben der Bilder //
+		//////////////////////////////////////
+		<field name='box_0_pos' 			accessType='outputOnly'	 	type='SFVec3f'/>
+		<field name='box_1_pos' 			accessType='outputOnly'	 	type='SFVec3f'/>
+		<field name='box_2_pos' 			accessType='outputOnly' 	type='SFVec3f'/>
+		<field name='box_3_pos' 			accessType='outputOnly' 	type='SFVec3f'/>
+		<field name='box_4_pos' 			accessType='outputOnly' 	type='SFVec3f'/>
+		<field name='box_5_pos' 			accessType='outputOnly' 	type='SFVec3f'/>
+		<field name='box_6_pos' 			accessType='outputOnly' 	type='SFVec3f'/>
+		<field name='box_7_pos' 			accessType='outputOnly' 	type='SFVec3f'/>
+		<field name='box_8_pos' 			accessType='outputOnly' 	type='SFVec3f'/>
+		<field name='box_9_pos' 			accessType='outputOnly' 	type='SFVec3f'/>
+		<field name='box_10_pos' 			accessType='outputOnly' 	type='SFVec3f'/>
+		<field name='box_11_pos' 			accessType='outputOnly' 	type='SFVec3f'/>
+		//////////////////////////////////////
+		// fuer das Maximieren der Bilder   //
+		//////////////////////////////////////
+		<field name='box_0_max' 			accessType='outputOnly'	 	type='SFBool'/>
+		<field name='box_1_max' 			accessType='outputOnly'	 	type='SFBool'/>
+		<field name='box_2_max' 			accessType='outputOnly'	 	type='SFBool'/>
+		<field name='box_3_max' 			accessType='outputOnly'	 	type='SFBool'/>
+		<field name='box_4_max' 			accessType='outputOnly'	 	type='SFBool'/>
+		<field name='box_5_max' 			accessType='outputOnly'	 	type='SFBool'/>
+		<field name='box_6_max' 			accessType='outputOnly'	 	type='SFBool'/>
+		<field name='box_7_max' 			accessType='outputOnly'	 	type='SFBool'/>
+		<field name='box_8_max' 			accessType='outputOnly'	 	type='SFBool'/>
+		<field name='box_9_max' 			accessType='outputOnly'	 	type='SFBool'/>
+		<field name='box_10_max' 			accessType='outputOnly'	 	type='SFBool'/>
+		<field name='box_11_max' 			accessType='outputOnly'	 	type='SFBool'/>
+	</Script>
+			
+	////////////////////////////////
+	// Routen der Kinect Bedinung //
+	////////////////////////////////
+    <ROUTE fromNode='kinect' 				fromField='JointPositions' 	toNode='script_kinect'			toField='hand_changed'/>
+	<ROUTE fromNode='kinect' 				fromField='NumUsers'		toNode='script_kinect'			toField='users_changed'/>
+	<ROUTE fromNode='kinect' 				fromField='Gesture'		toNode='script_kinect'			toField='gesture_recognized'/>
+	<ROUTE fromNode='kinect' 				fromField='JointOrientations'		toNode='script_kinect'			toField='skeleton_orientation'/>
+	
+	
+	
+    <ROUTE fromNode='kinect' 				fromField='depth' 			toNode='depth'					toField='set_image'/>
+	<ROUTE fromNode='kinect' 				fromField='image' 			toNode='image' 					toField='set_image'/>
+	
+	
+	<ROUTE fromNode='script_kinect' 				fromField='vp_position' 			toNode='vp1' 					toField='position'/>
+	<ROUTE fromNode='script_kinect' 				fromField='vp_orientation' 			toNode='vp1' 					toField='orientation'/>
+	
+	/////////////////////////////////////////
+	// fuer die Interaktion mit den Haende //
+	/////////////////////////////////////////
+	<ROUTE fromNode='script_kinect' 		fromField='button_R' 		toNode='touch_button_R'			toField='enabled'/>
+	<ROUTE fromNode='script_kinect'			fromField='button_L'		toNode='touch_button_L'			toField='enabled'/>
+	<ROUTE fromNode='touch_button_R'		fromField='enabled'	 		toNode='script' 				toField='kinect_rechts_B'/>
+	<ROUTE fromNode='touch_button_L'		fromField='enabled'			toNode='script'					toField='kinect_links_B'/>
+	
+	<ROUTE fromNode='button_move_transform'	fromField='translation'				toNode='script_kinect'				toField='button_move_position'/>
+	<ROUTE fromNode='script_kinect'			fromField='button_move_position'	toNode='button_move_transform'		toField='translation'/>
+	
+	<ROUTE fromNode='script_kinect'			fromField='button_geste_farbe'	toNode='button_geste_material'		toField='diffuseColor'/>
+	<ROUTE fromNode='script_kinect'			fromField='button_geste_text'	toNode='button_geste_text'		toField='set_string'/>
+	
+	
+	
+	///////////////////////////////////////////////////////////
+	// Routen fuer das Vergroessern der Bilder beim Klicken //
+	///////////////////////////////////////////////////////////
+	<ROUTE fromNode='script_kinect' 	fromField='box_0_scale' 	toNode='box_0' 		toField='scale'/>
+	<ROUTE fromNode='script_kinect' 	fromField='box_1_scale' 	toNode='box_1' 		toField='scale'/>
+	<ROUTE fromNode='script_kinect' 	fromField='box_2_scale' 	toNode='box_2' 		toField='scale'/>
+	<ROUTE fromNode='script_kinect' 	fromField='box_3_scale' 	toNode='box_3' 		toField='scale'/>
+	<ROUTE fromNode='script_kinect' 	fromField='box_4_scale' 	toNode='box_4' 		toField='scale'/>
+	<ROUTE fromNode='script_kinect' 	fromField='box_5_scale' 	toNode='box_5' 		toField='scale'/>
+	<ROUTE fromNode='script_kinect' 	fromField='box_6_scale' 	toNode='box_6' 		toField='scale'/>
+	<ROUTE fromNode='script_kinect' 	fromField='box_7_scale' 	toNode='box_7' 		toField='scale'/>
+	<ROUTE fromNode='script_kinect' 	fromField='box_8_scale' 	toNode='box_8' 		toField='scale'/>
+	<ROUTE fromNode='script_kinect' 	fromField='box_9_scale' 	toNode='box_9' 		toField='scale'/>
+	<ROUTE fromNode='script_kinect' 	fromField='box_10_scale' 	toNode='box_10' 	toField='scale'/>
+	<ROUTE fromNode='script_kinect' 	fromField='box_11_scale' 	toNode='box_11' 	toField='scale'/>
+	//////////////////////////////////////////////////////////////
+	// Routen fuer das Verschieben der Bilder                   //
+	//////////////////////////////////////////////////////////////
+	<ROUTE fromNode='script_kinect' 	fromField='box_0_pos' 	toNode='box_0' 		toField='translation'/>
+	<ROUTE fromNode='script_kinect' 	fromField='box_1_pos' 	toNode='box_1' 		toField='translation'/>
+	<ROUTE fromNode='script_kinect' 	fromField='box_2_pos' 	toNode='box_2' 		toField='translation'/>
+	<ROUTE fromNode='script_kinect' 	fromField='box_3_pos' 	toNode='box_3' 		toField='translation'/>
+	<ROUTE fromNode='script_kinect' 	fromField='box_4_pos' 	toNode='box_4' 		toField='translation'/>
+	<ROUTE fromNode='script_kinect' 	fromField='box_5_pos' 	toNode='box_5' 		toField='translation'/>
+	<ROUTE fromNode='script_kinect' 	fromField='box_6_pos' 	toNode='box_6' 		toField='translation'/>
+	<ROUTE fromNode='script_kinect' 	fromField='box_7_pos' 	toNode='box_7' 		toField='translation'/>
+	<ROUTE fromNode='script_kinect' 	fromField='box_8_pos' 	toNode='box_8' 		toField='translation'/>
+	<ROUTE fromNode='script_kinect' 	fromField='box_9_pos' 	toNode='box_9' 		toField='translation'/>
+	<ROUTE fromNode='script_kinect' 	fromField='box_10_pos' 	toNode='box_10' 	toField='translation'/>
+	<ROUTE fromNode='script_kinect' 	fromField='box_11_pos' 	toNode='box_11' 	toField='translation'/>
+	//////////////////////////////////////////////////////////////
+	// Routen fuer das vergroessern der Bilder beim Verschieben //
+	//////////////////////////////////////////////////////////////
+	<ROUTE fromNode='script_kinect' 	fromField='box_0_max' 	toNode='script' 	toField='isActive_0'/>
+	<ROUTE fromNode='script_kinect' 	fromField='box_1_max' 	toNode='script' 	toField='isActive_1'/>
+	<ROUTE fromNode='script_kinect' 	fromField='box_2_max' 	toNode='script' 	toField='isActive_2'/>
+	<ROUTE fromNode='script_kinect' 	fromField='box_3_max' 	toNode='script' 	toField='isActive_3'/>
+	<ROUTE fromNode='script_kinect' 	fromField='box_4_max' 	toNode='script' 	toField='isActive_4'/>
+	<ROUTE fromNode='script_kinect' 	fromField='box_5_max' 	toNode='script' 	toField='isActive_5'/>
+	<ROUTE fromNode='script_kinect' 	fromField='box_6_max' 	toNode='script' 	toField='isActive_6'/>
+	<ROUTE fromNode='script_kinect' 	fromField='box_7_max' 	toNode='script' 	toField='isActive_7'/>
+	<ROUTE fromNode='script_kinect' 	fromField='box_8_max' 	toNode='script' 	toField='isActive_8'/>
+	<ROUTE fromNode='script_kinect' 	fromField='box_9_max' 	toNode='script' 	toField='isActive_9'/>
+	<ROUTE fromNode='script_kinect' 	fromField='box_10_max' 	toNode='script' 	toField='isActive_10'/>
+	<ROUTE fromNode='script_kinect' 	fromField='box_11_max' 	toNode='script' 	toField='isActive_11'/>	
+	
+	/////////////////////////////////////////////////////////////////////
+	// Diese Routen sind wenn die Animation mit der Kinect stattfindet //
+	/////////////////////////////////////////////////////////////////////
+	// Router fuer die Animation alle Boxen mit dem linken Button //
+	////////////////////////////////////////////////////////////////	
+	<ROUTE fromNode='script_kinect' 		fromField='button_L_time' 			toNode='zeit_box_0_links' 		toField='startTime'/>
+	<ROUTE fromNode='script_kinect' 		fromField='button_L_time' 			toNode='zeit_box_1_links' 		toField='startTime'/>
+	<ROUTE fromNode='script_kinect' 		fromField='button_L_time' 			toNode='zeit_box_2_links' 		toField='startTime'/>
+	<ROUTE fromNode='script_kinect' 		fromField='button_L_time' 			toNode='zeit_box_3_links' 		toField='startTime'/>
+	<ROUTE fromNode='script_kinect' 		fromField='button_L_time' 			toNode='zeit_box_4_links' 		toField='startTime'/>
+	<ROUTE fromNode='script_kinect' 		fromField='button_L_time' 			toNode='zeit_box_5_links' 		toField='startTime'/>
+	<ROUTE fromNode='script_kinect' 		fromField='button_L_time' 			toNode='zeit_box_6_links' 		toField='startTime'/>
+	<ROUTE fromNode='script_kinect' 		fromField='button_L_time' 			toNode='zeit_box_7_links' 		toField='startTime'/>
+	<ROUTE fromNode='script_kinect' 		fromField='button_L_time' 			toNode='zeit_box_8_links' 		toField='startTime'/>
+	<ROUTE fromNode='script_kinect' 		fromField='button_L_time' 			toNode='zeit_box_9_links' 		toField='startTime'/>
+	<ROUTE fromNode='script_kinect' 		fromField='button_L_time' 			toNode='zeit_box_10_links' 		toField='startTime'/>
+	<ROUTE fromNode='script_kinect' 		fromField='button_L_time' 			toNode='zeit_box_11_links' 		toField='startTime'/>
+	
+	
+	/////////////////////////////////////////////////////////////////
+	// Router fuer die Animation alle Boxen mit dem rechten Button //
+	/////////////////////////////////////////////////////////////////
+	<ROUTE fromNode='script_kinect' 		fromField='button_R_time' 			toNode='zeit_box_0_rechts' 		toField='startTime'/>
+	<ROUTE fromNode='script_kinect' 		fromField='button_R_time' 			toNode='zeit_box_1_rechts' 		toField='startTime'/>
+	<ROUTE fromNode='script_kinect' 		fromField='button_R_time' 			toNode='zeit_box_2_rechts' 		toField='startTime'/>
+	<ROUTE fromNode='script_kinect' 		fromField='button_R_time' 			toNode='zeit_box_3_rechts' 		toField='startTime'/>
+	<ROUTE fromNode='script_kinect' 		fromField='button_R_time' 			toNode='zeit_box_4_rechts' 		toField='startTime'/>
+	<ROUTE fromNode='script_kinect' 		fromField='button_R_time' 			toNode='zeit_box_5_rechts' 		toField='startTime'/>
+	<ROUTE fromNode='script_kinect' 		fromField='button_R_time' 			toNode='zeit_box_6_rechts' 		toField='startTime'/>
+	<ROUTE fromNode='script_kinect' 		fromField='button_R_time' 			toNode='zeit_box_7_rechts' 		toField='startTime'/>
+	<ROUTE fromNode='script_kinect' 		fromField='button_R_time' 			toNode='zeit_box_8_rechts' 		toField='startTime'/>
+	<ROUTE fromNode='script_kinect' 		fromField='button_R_time' 			toNode='zeit_box_9_rechts' 		toField='startTime'/>
+	<ROUTE fromNode='script_kinect' 		fromField='button_R_time' 			toNode='zeit_box_10_rechts' 		toField='startTime'/>
+	<ROUTE fromNode='script_kinect' 		fromField='button_R_time' 			toNode='zeit_box_11_rechts' 		toField='startTime'/>
+	
+	/////////////////////////////////////////////////////////////
+	// Router fuer die Animation einzelne Boxen mit der Kinect //
+	/////////////////////////////////////////////////////////////
+	<ROUTE fromNode='script_kinect'			fromField='kinect_box_0_time'		toNode='zeit_box_0_rechts'		toField='startTime'/>
+	<ROUTE fromNode='script_kinect'			fromField='kinect_box_1_time'		toNode='zeit_box_1_rechts'		toField='startTime'/>
+	<ROUTE fromNode='script_kinect'			fromField='kinect_box_2_time'		toNode='zeit_box_2_rechts'		toField='startTime'/>
+	<ROUTE fromNode='script_kinect'			fromField='kinect_box_3_time'		toNode='zeit_box_3_rechts'		toField='startTime'/>
+	<ROUTE fromNode='script_kinect'			fromField='kinect_box_4_time'		toNode='zeit_box_4_rechts'		toField='startTime'/>
+	<ROUTE fromNode='script_kinect'			fromField='kinect_box_5_time'		toNode='zeit_box_5_rechts'		toField='startTime'/>
+	<ROUTE fromNode='script_kinect'			fromField='kinect_box_6_time'		toNode='zeit_box_6_rechts'		toField='startTime'/>
+	<ROUTE fromNode='script_kinect'			fromField='kinect_box_7_time'		toNode='zeit_box_7_rechts'		toField='startTime'/>
+	<ROUTE fromNode='script_kinect'			fromField='kinect_box_8_time'		toNode='zeit_box_8_rechts'		toField='startTime'/>
+	<ROUTE fromNode='script_kinect'			fromField='kinect_box_9_time'		toNode='zeit_box_9_rechts'		toField='startTime'/>
+	<ROUTE fromNode='script_kinect'			fromField='kinect_box_10_time'		toNode='zeit_box_10_rechts'		toField='startTime'/>
+	<ROUTE fromNode='script_kinect'			fromField='kinect_box_11_time'		toNode='zeit_box_11_rechts'		toField='startTime'/>
+
+</Scene>
+</X3D>

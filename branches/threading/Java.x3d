@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE X3D PUBLIC "ISO//Web3D//DTD X3D 3.0//EN" "http://www.web3d.org/specifications/x3d-3.0.dtd">
+<X3D xmlns:xsd='http://www.w3.org/2001/XMLSchema-instance' profile='Full' version='3.0' xsd:noNamespaceSchemaLocation='http://www.web3d.org/specifications/x3d-3.0.xsd'>
+  
+
+<Engine>
+ <RenderJob>
+	<WindowGroup>
+	  <Window size='700 600'/>
+	</WindowGroup>
+  </RenderJob>
+</Engine>
+
+  
+<Scene>
+  <!-- OpenNI Kinect sensor -->
+  <IOSensor DEF='kinect' type='NI'>
+	<field accessType='outputOnly' 	name='Depth' 		    type='SFImage'/>
+	<field accessType='outputOnly'  name='JointPositions'	type='MFVec3f'/>
+    <field accessType='outputOnly'  name='JointOrientations'    type='MFRotation'/>
+  </IOSensor>
+
+	<SolidBackground color='0.1 0.3 0.2'/>
+	
+	
+	<Transform translation="-3 2.5 0">
+		<Shape>
+	    	<Box DEF='box_1'
+				size='1 1 0'
+				useGeoCache='TRUE'
+				solid='TRUE'
+				lit='TRUE'
+				resolution='1'
+				multiResolutionLevel='1'
+				invalidateVolume='FALSE'
+				normalUpdateMode='nice'
+				cacheMode='auto'
+				optimizationMode='auto'
+				logFeature=''
+			/>
+			<Appearance>
+				<Material diffuseColor='1 0 0'/>
+				<ImageTexture DEF='image_change_1' url=""/>
+			</Appearance>
+		</Shape>
+		<TouchSensor DEF='touch_me_1'/>
+	</Transform>
+	
+	
+	<Transform translation="0 2.5 0">
+		<Shape>
+	    	<Box DEF='box_2'
+				size='1 1 0'
+				useGeoCache='TRUE'
+				solid='TRUE'
+				lit='TRUE'
+				resolution='1'
+				multiResolutionLevel='1'
+				invalidateVolume='FALSE'
+				normalUpdateMode='nice'
+				cacheMode='auto'
+				optimizationMode='auto'
+				logFeature=''
+			/>
+			<Appearance>
+				<Material diffuseColor='1 0 0'/>
+				<ImageTexture DEF='image_change_2' url=""/>
+			</Appearance>
+		</Shape>
+		<TouchSensor DEF='touch_me_2'/>
+	</Transform>
+	
+	
+	<Transform translation="3 2.5 0">
+		<Shape>
+	    	<Box DEF='box_3'
+				size='1 1 0'
+				useGeoCache='TRUE'
+				solid='TRUE'
+				lit='TRUE'
+				resolution='1'
+				multiResolutionLevel='1'
+				invalidateVolume='FALSE'
+				normalUpdateMode='nice'
+				cacheMode='auto'
+				optimizationMode='auto'
+				logFeature=''
+			/>
+			<Appearance>
+				<Material diffuseColor='1 0 0'/>
+				<ImageTexture DEF='image_change_3' url=""/>
+			</Appearance>
+		</Shape>
+		<TouchSensor DEF='touch_me_3'/>
+	</Transform>
+	
+	
+	<Transform translation="-3 0 0">
+		<Shape>
+	    	<Box DEF='box_4' 
+				size='2 2 0'
+				useGeoCache='TRUE'
+				solid='TRUE'
+				lit='TRUE'
+				resolution='1'
+				multiResolutionLevel='1'
+				invalidateVolume='FALSE'
+				normalUpdateMode='nice'
+				cacheMode='auto'
+				optimizationMode='auto'
+				logFeature=''
+			/>
+			<Appearance>
+				<Material diffuseColor='1 0 0'/>
+				<ImageTexture DEF='image_change_4' url=""/>
+			</Appearance>
+		</Shape>
+		<TouchSensor DEF='touch_me_4'/>
+	</Transform>
+	
+	
+	<Transform translation="0 0 0">
+		<Shape>
+	    	<Box DEF='box_5'
+				size='2 2 0'
+				useGeoCache='TRUE'
+				solid='TRUE'
+				lit='TRUE'
+				resolution='1'
+				multiResolutionLevel='1'
+				invalidateVolume='FALSE'
+				normalUpdateMode='nice'
+				cacheMode='auto'
+				optimizationMode='auto'
+				logFeature=''
+			/>
+			<Appearance>
+				<Material diffuseColor='1 0 0'/>
+				<ImageTexture DEF='image_change_5' url=""/>
+			</Appearance>
+		</Shape>
+		<TouchSensor DEF='touch_me_5'/>
+	</Transform>
+	
+	
+	<Transform translation="3 0 0">
+		<Shape>
+	    	<Box DEF='box_6' 
+				size='2 2 0'
+				useGeoCache='TRUE'
+				solid='TRUE'
+				lit='TRUE'
+				resolution='1'
+				multiResolutionLevel='1'
+				invalidateVolume='FALSE'
+				normalUpdateMode='nice'
+				cacheMode='auto'
+				optimizationMode='auto'
+				logFeature=''
+			/>
+			<Appearance>
+				<Material diffuseColor='1 0 0'/>
+				<ImageTexture DEF='image_change_6' url=""/>
+			</Appearance>
+		</Shape>
+		<TouchSensor DEF='touch_me_6'/>
+	</Transform>
+	
+	
+	<Transform translation="-3 -2.5 0">
+		<Shape>
+	    	<Box DEF='box_7' 
+				size='2 2 0'
+				useGeoCache='TRUE'
+				solid='TRUE'
+				lit='TRUE'
+				resolution='1'
+				multiResolutionLevel='1'
+				invalidateVolume='FALSE'
+				normalUpdateMode='nice'
+				cacheMode='auto'
+				optimizationMode='auto'
+				logFeature=''
+			/>
+			<Appearance>
+				<Material diffuseColor='1 0 0'/>
+				<ImageTexture DEF='image_change_7' url=""/>
+			</Appearance>
+		</Shape>
+		<TouchSensor DEF='touch_me_7'/>
+	</Transform>
+	
+	
+	<Transform translation="0 -2.5 0">
+		<Shape>
+	    	<Box DEF='box_8' 
+				size='2 2 0'
+				useGeoCache='TRUE'
+				solid='TRUE'
+				lit='TRUE'
+				resolution='1'
+				multiResolutionLevel='1'
+				invalidateVolume='FALSE'
+				normalUpdateMode='nice'
+				cacheMode='auto'
+				optimizationMode='auto'
+				logFeature=''
+			/>
+			<Appearance>
+				<Material diffuseColor='1 0 0'/>
+				<ImageTexture DEF='image_change_8' url=""/>
+			</Appearance>
+		</Shape>
+		<TouchSensor DEF='touch_me_8'/>
+	</Transform>
+	
+	
+	<Transform translation="3 -2.5 0">
+		<Shape>
+	    	<Box DEF='box_9'
+				size='2 2 0'
+				useGeoCache='TRUE'
+				solid='TRUE'
+				lit='TRUE'
+				resolution='1'
+				multiResolutionLevel='1'
+				invalidateVolume='FALSE'
+				normalUpdateMode='nice'
+				cacheMode='auto'
+				optimizationMode='auto'
+				logFeature=''
+			/>
+			<Appearance>
+				<Material diffuseColor='1 0 0'/>
+				<ImageTexture DEF='image_change_9' url=""/>
+			</Appearance>
+		</Shape>
+		<TouchSensor DEF='touch_me_9'/>
+	</Transform>
+	
+	<Transform translation="0 +2.5 0">
+		<Shape>
+		  <Text DEF='text' string='""'>
+			<FontStyle justify='"MIDDLE" "MIDDLE"'/>
+		  </Text>
+		</Shape>
+	</Transform>
+	
+	
+	
+    <Script DEF='script' url="MyCode.class" directOutput='true' mustEvaluate='true'>
+      <field name='set_image' accessType='inputOnly' type='SFBool'/>
+	  
+      <field name='isActive_1' accessType='inputOnly' type='SFBool'/>
+	  <field name='isActive_2' accessType='inputOnly' type='SFBool'/>
+	  <field name='isActive_3' accessType='inputOnly' type='SFBool'/>
+	  <field name='isActive_4' accessType='inputOnly' type='SFBool'/>
+	  <field name='isActive_5' accessType='inputOnly' type='SFBool'/>
+	  <field name='isActive_6' accessType='inputOnly' type='SFBool'/>
+	  <field name='isActive_7' accessType='inputOnly' type='SFBool'/>
+	  <field name='isActive_8' accessType='inputOnly' type='SFBool'/>
+	  <field name='isActive_9' accessType='inputOnly' type='SFBool'/>
+	  
+      <field name='url_change_1' accessType='outputOnly' type='SFString'/>
+	  <field name='url_change_2' accessType='outputOnly' type='SFString'/>
+	  <field name='url_change_3' accessType='outputOnly' type='SFString'/>
+	  <field name='url_change_4' accessType='outputOnly' type='SFString'/>
+	  <field name='url_change_5' accessType='outputOnly' type='SFString'/>
+	  <field name='url_change_6' accessType='outputOnly' type='SFString'/>
+	  <field name='url_change_7' accessType='outputOnly' type='SFString'/>
+	  <field name='url_change_8' accessType='outputOnly' type='SFString'/>
+	  <field name='url_change_9' accessType='outputOnly' type='SFString'/>
+	  
+	  <field name='flag_1' accessType='initializeOnly' type='SFBool' value='false'/>
+	  <field name='flag_2' accessType='initializeOnly' type='SFBool' value='false'/>
+	  <field name='flag_3' accessType='initializeOnly' type='SFBool' value='false'/>
+	  <field name='flag_4' accessType='initializeOnly' type='SFBool' value='false'/>
+	  <field name='flag_5' accessType='initializeOnly' type='SFBool' value='false'/>
+	  <field name='flag_6' accessType='initializeOnly' type='SFBool' value='false'/>
+	  <field name='flag_7' accessType='initializeOnly' type='SFBool' value='false'/>
+	  <field name='flag_8' accessType='initializeOnly' type='SFBool' value='false'/>
+	  <field name='flag_9' accessType='initializeOnly' type='SFBool' value='false'/>
+	  
+	  <field accessType='initializeOnly' name='text' type='SFNode'>
+        <Text USE='text'/>
+      </field>
+    </Script>
+
+	<ROUTE fromNode='kinect' fromField='JointPositions' toNode='script'	toField='skeleton_changed'/>
+	<ROUTE fromNode='kinect' fromField='Depth' 			toNode='depth'	toField='set_image'/>
+
+    <ROUTE fromNode='touch_me_1' fromField='isActive' toNode='script' toField='isActive_1'/>
+	<ROUTE fromNode='touch_me_2' fromField='isActive' toNode='script' toField='isActive_2'/>
+	<ROUTE fromNode='touch_me_3' fromField='isActive' toNode='script' toField='isActive_3'/>
+	<ROUTE fromNode='touch_me_4' fromField='isActive' toNode='script' toField='isActive_4'/>
+	<ROUTE fromNode='touch_me_5' fromField='isActive' toNode='script' toField='isActive_5'/>
+	<ROUTE fromNode='touch_me_6' fromField='isActive' toNode='script' toField='isActive_6'/>
+	<ROUTE fromNode='touch_me_7' fromField='isActive' toNode='script' toField='isActive_7'/>
+	<ROUTE fromNode='touch_me_8' fromField='isActive' toNode='script' toField='isActive_8'/>
+	<ROUTE fromNode='touch_me_9' fromField='isActive' toNode='script' toField='isActive_9'/>
+	
+    <ROUTE fromNode='script' fromField='url_change_1' toNode='image_change_1' toField='set_url'/>
+	<ROUTE fromNode='script' fromField='url_change_2' toNode='image_change_2' toField='set_url'/>
+	<ROUTE fromNode='script' fromField='url_change_3' toNode='image_change_3' toField='set_url'/>
+	<ROUTE fromNode='script' fromField='url_change_4' toNode='image_change_4' toField='set_url'/>
+	<ROUTE fromNode='script' fromField='url_change_5' toNode='image_change_5' toField='set_url'/>
+	<ROUTE fromNode='script' fromField='url_change_6' toNode='image_change_6' toField='set_url'/>
+	<ROUTE fromNode='script' fromField='url_change_7' toNode='image_change_7' toField='set_url'/>
+	<ROUTE fromNode='script' fromField='url_change_8' toNode='image_change_8' toField='set_url'/>
+	<ROUTE fromNode='script' fromField='url_change_9' toNode='image_change_9' toField='set_url'/>
+
+</Scene>
+</X3D>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE X3D PUBLIC "ISO//Web3D//DTD X3D 3.0//EN" "http://www.web3d.org/specifications/x3d-3.0.dtd">
+<X3D xmlns:xsd='http://www.w3.org/2001/XMLSchema-instance' profile='Full' version='3.0' xsd:noNamespaceSchemaLocation='http://www.web3d.org/specifications/x3d-3.0.xsd'>
+  <Scene DEF='scene'>
+    <NavigationInfo headlight='false'/>
+    <Viewpoint position='0 0 5'/>
+
+    <Transform DEF='trans0' translation='0 0 -2'>
+      <Shape>
+        <Appearance>
+          <Material ambientIntensity='1' diffuseColor='0. 1. 1.'/>
+        </Appearance>
+        <Rectangle2D size="5 5"/>
+      </Shape>
+    </Transform>
+    <Transform DEF='trans1' translation='-2 2 2'>
+      <Shape>
+        <Appearance>
+          <Material diffuseColor='1 0 0'/>
+        </Appearance>
+        <Box/>
+      </Shape>
+    </Transform>
+    <Transform DEF='trans2' translation='2 2 2'>
+      <Shape>
+        <Appearance>
+          <Material diffuseColor='0 1 0'/>
+        </Appearance>
+        <Cone/>
+      </Shape>
+    </Transform>
+    <Transform DEF='trans3' translation='-2 -2 2'>
+      <Shape>
+        <Appearance>
+          <Material diffuseColor='0 0 1'/>
+        </Appearance>
+        <Cylinder/>
+      </Shape>
+    </Transform>
+    <Transform DEF='trans4' translation='2 -2 2'>
+      <Shape>
+        <Appearance>
+          <Material diffuseColor='1 1 0'/>
+        </Appearance>
+        <Sphere/>
+      </Shape>
+    </Transform>
+
+    <Transform translation='0 0 6'>
+          <PointLight showProxyGeometry='true'/>
+    </Transform>
+    <Transform translation='3 0 6'>
+          <PointLight color='.001 0 0' showProxyGeometry='true'/>
+    </Transform>
+    <Transform translation='-3 0 6'>
+          <PointLight color='0 .001 0' showProxyGeometry='true'/>
+    </Transform>
+
+    <Shape >
+      <Torus DEF='tor' solid="false"/>
+      <Appearance>
+        <CommonSurfaceShader
+          diffuseFactor="0.5 0.5 0.5"
+          specularFactor="1 1 1"
+          shininessFactor="1"
+          
+          environmentFactor="1 1 1"
+          reflectionFactor=".7 .7 .7"
+          transmissionFactor="0.0 0.0 0.0"
+          relativeIndexOfRefraction="1.0"
+          fresnelBlend = ".5"
+          >
+          <SurfaceShaderTexture containerField="diffuseTexture" >
+            <ImageTexture url="data/wood.jpg"/>
+          </SurfaceShaderTexture>
+          <SurfaceShaderTexture containerField="normalTexture" >
+            <ImageTexture url="data/normalmap.jpg"/>
+            <TextureTransform scale="3 1"/>
+          </SurfaceShaderTexture>
+<!--          
+          <GeneratedCubeMapTexture containerField="environmentTexture" update="ALWAYS">
+            <Torus USE="tor"/>
+          </GeneratedCubeMapTexture>
+-->
+
+        </CommonSurfaceShader>
+      </Appearance>
+    </Shape>
+  </Scene>
+</X3D>

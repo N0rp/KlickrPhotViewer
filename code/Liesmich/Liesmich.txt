@@ -1,0 +1,35 @@
+Hi,
+
+also bevor du versuchst hier etwas auszufuehren muss du noch ein paar
+Sachen zu deinem System hinzufügen, die 2 .jar bibliotheken die ich
+hier hinzugefuegt habe:
+
+	flickrapi-1.2.jar 	(flickr Java-API)
+	instantreality.jar      (Java-Bibliothek fuer X3D Anbindung)
+
+diese muessen in den Ordner -->
+
+	für 64bit Systeme->
+
+	C:\Program Files\Java\jdk<version>\jre\lib\ext
+	C:\Program Files\Java\jre6\lib\ext
+	C:\Program Files (x86)\Java\jre6\lib\ext
+
+	für 32bit Systeme->
+
+	C:\Programme\Java\jdk<version>\jre\lib\ext
+	C:\Programme\Java\jre6\lib\ext
+
+
+
+Danach in der console nur die MyCode.java datei kompilieren mit->
+	
+	javac MyCode.java
+
+
+fertig!
+
+PS: Es ist noch nicht alles fertig, aber sicher ist das die Flickr api mit
+    java funktioniert und auch die link_liste erstellt wird, man muss jetzt
+    nur noch dafür sorgen das diese in den Texturen geladen werden.
+    Ich bin zur Zeit dabei.

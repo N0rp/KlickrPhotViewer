@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE X3D PUBLIC "ISO//Web3D//DTD X3D 3.0//EN" "http://www.web3d.org/specifications/x3d-3.0.dtd">
+<X3D xmlns:xsd='http://www.w3.org/2001/XMLSchema-instance' profile='Full' version='3.0' xsd:noNamespaceSchemaLocation='http://www.web3d.org/specifications/x3d-3.0.xsd'>
+    <Scene>
+        <Transform translation="0 0 -2">
+			<Shape>
+			    <Rectangle2D size="2 2"/>
+			</Shape>
+		</Transform>
+        <Transform translation="0 0 0">
+			<Shape>
+				<Box />
+				<Appearance>
+			        <CommonSurfaceShader
+                        diffuseFactor="1 1 1"
+                        specularFactor="1 1 1"
+                        shininessFactor=".8"
+                    >
+                      <ImageTexture DEF="diff" containerField="diffuseTexture" url="data/alpha.tga"/>
+                      <ImageTexture USE="diff" containerField="specularTexture"/>
+                      <ImageTexture USE="diff" containerField="alphaTexture"/>
+                      <ImageTexture containerField="normalTexture" url="data/normal_test.tga"/>
+                    </CommonSurfaceShader>
+
+				</Appearance>
+			</Shape>
+		</Transform>
+
+    </Scene>
+</X3D>

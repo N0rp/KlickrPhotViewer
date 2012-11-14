@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="trunk/FunktionierendesModel/Andres Version"/>
+	<classpathentry kind="src" path="trunk/FunktionierendesModel/versuch2"/>
+	<classpathentry kind="lib" path="Liesmich/flickrapi-1.2.jar"/>
+	<classpathentry kind="lib" path="Liesmich/instantreality.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="trunk/FunktionierendesModel/versuch2"/>
+</classpath>

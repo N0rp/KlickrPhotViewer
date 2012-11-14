@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE X3D PUBLIC "ISO//Web3D//DTD X3D 3.0//EN" "http://www.web3d.org/specifications/x3d-3.0.dtd">
+<X3D profile='Immersive' version='3.0' xmlns:xsd='http://www.w3.org/2001/XMLSchema-instance' xsd:noNamespaceSchemaLocation='http://www.web3d.org/specifications/x3d-3.0.xsd'>
+  
+  <Scene>
+        <SolidBackground color='1 1 1'/>
+        <Environment stateSorting='TRUE'
+        systemSpeed='1.0'
+        syncOnFrameFinish='FALSE'
+        smallFeatureThreshold='32'
+        specTexLighting='TRUE'
+        backfaceCulling='FALSE'
+        frustumCulling='TRUE'
+        smallFeaturePixels='10.0'
+        smallFeatureCulling='FALSE'
+        localLights='TRUE'
+        drawVolume='FALSE'
+        polygonMode='fill'
+        twoSidedLighting='TRUE'
+        correctTwoSidedLighting='TRUE'
+        occlusionCullingThreshold='32'
+        sortTrans='TRUE'
+        occlusionCullingMode='stopAndWait'
+        occlusionCullingPixels='10.0'
+        occlusionCulling='FALSE'
+        frameBufferMode='auto'
+        shadowExcludeTransparentObjects='FALSE'
+        shadowSmoothness='0.2'
+        shadowOffset='4'
+        shadowMode='uniformSoftShadow'
+        shadowMapSize='1024'
+        globalShadowIntensity='0.5'
+        isDefault='FALSE'
+        description=''
+        triggerName='Synchronize'
+        logFeature=''
+         /> 
+         <NavigationInfo type='ANY'
+        interactionType='ANY'
+        transitionType='LINEAR'
+        avatarSize='0.25, 1.6, 0.75'
+        visibilityLimit='0.0'
+        speed='1'
+        globalAmbient='0.0 0.0 0.0'
+        headlight='FALSE'
+        headlightDiffuse='1. 1. 1.'
+        headlightAmbient='0.1 0.1 0.1'
+        headlightSpecular='1. 1. 1.'
+        evaluateIsOver='TRUE'
+        transitionTime='1.0'
+        sceneScale='1'
+        webUrl=''
+        isDefault='FALSE'
+        description=''
+        triggerName='Synchronize'
+        logFeature=''
+         />
+        <Viewpoint description='Model 1' orientation='1.0 0.0 0.0 -0.55' position='0 5 7'/>
+        <PointLight attenuation='1 0 0'
+        location='10 10 10'
+        radius='100'
+        global='TRUE'
+        ambientIntensity='.0'
+        color='1 1 1'
+        intensity='1'
+        showProxyGeometry='FALSE'
+        proxyGeometrySize='1 1 1'
+        shadowIntensity='0'
+        local='FALSE'
+        logFeature=''
+        on='TRUE'
+         />
+    <Transform translation='0 0.1 0' rotation='-1.000 -0.000 -0.000 -1.571'>
+			<Shape >
+				<IndexedFaceSet DEF='Box02-GEOMETRY' solid='false' coordIndex='0 2 3 -1   3 1 0 -1   4 5 7 -1   7 6 4 -1   0 1 5 -1   5 4 0 -1   1 3 7 -1   7 5 1 -1   3 2 6 -1   6 7 3 -1   2 0 4 -1   4 6 2 -1   8 10 11 -1   11 9 8 -1   12 13 15 -1   15 14 12 -1   8 9 13 -1   13 12 8 -1   9 11 15 -1   15 13 9 -1   11 10 14 -1   14 15 11 -1   10 8 12 -1   12 14 10 -1   ' normalIndex='4 4 4 -1   4 4 4 -1   2 2 2 -1   2 2 2 -1   3 3 3 -1   3 3 3 -1   0 0 0 -1   0 0 0 -1   5 5 5 -1   5 5 5 -1   1 1 1 -1   1 1 1 -1   4 4 4 -1   4 4 4 -1   2 2 2 -1   2 2 2 -1   3 3 3 -1   3 3 3 -1   0 0 0 -1   0 0 0 -1   5 5 5 -1   5 5 5 -1   1 1 1 -1   1 1 1 -1   ' texCoordIndex='16, 17, 18, -1,   19, 20, 21, -1,   22, 23, 24, -1,   25, 26, 27, -1,   28, 29, 30, -1,   31, 32, 33, -1,   34, 35, 36, -1,   37, 5, 1, -1,   38, 39, 40, -1,   41, 7, 3, -1,   42, 0, 43, -1,   4, 6, 2, -1,   44, 45, 46, -1,   47, 48, 49, -1,   50, 51, 52, -1,   53, 54, 55, -1,   56, 57, 58, -1,   59, 60, 61, -1,   62, 63, 64, -1,   65, 13, 9, -1,   66, 67, 68, -1,   69, 15, 11, -1,   70, 8, 71, -1,   12, 14, 10, -1,   ' >
+					<Coordinate point='-4.0000 -1.9900 0.0100, 4.0000 -1.9900 0.0100, -4.0000 -1.9900 -0.9900, 4.0000 -1.9900 -0.9900, -4.0000 0.0100 0.0100, 4.0000 0.0100 0.0100, -4.0000 0.0100 -0.9900, 4.0000 0.0100 -0.9900, -4.0000 -1.9900 1.0100, 4.0000 -1.9900 1.0100, -4.0000 -1.9900 0.0100, 4.0000 -1.9900 0.0100, -4.0000 2.0100 1.0100, 4.0000 2.0100 1.0100, -4.0000 2.0100 0.0100, 4.0000 2.0100 0.0100, '/>
+					<Normal vector='1.0000 0.0000 0.0000, -1.0000 0.0000 0.0000, 0.0000 1.0000 0.0000, 0.0000 0.0000 1.0000, 0.0000 -1.0000 0.0000, 0.0000 0.0000 -1.0000, '/>
+					<TextureCoordinate point='0.500 0.250, 0.500 0.250, 0.375 0.250, 0.000 0.250, 0.500 0.500, 0.500 0.500, 0.375 0.500, 0.000 0.500, 0.625 0.250, 0.375 0.250, 0.500 0.250, 0.000 0.250, 0.625 0.750, 0.375 0.750, 0.500 0.750, 0.000 0.750, 1.000 0.500, 1.000 0.625, 0.000 0.625, 0.000 0.625, 0.000 0.500, 1.000 0.500, 0.000 0.500, 1.000 0.500, 1.000 0.625, 1.000 0.625, 0.000 0.625, 0.000 0.500, 0.000 0.250, 1.000 0.250, 1.000 0.500, 1.000 0.500, 0.000 0.500, 0.000 0.250, 0.500 0.250, 0.625 0.250, 0.625 0.500, 0.625 0.500, 0.000 0.250, 1.000 0.250, 1.000 0.500, 1.000 0.500, 0.375 0.250, 0.500 0.500, 1.000 0.375, 1.000 0.500, 0.000 0.500, 0.000 0.500, 0.000 0.375, 1.000 0.375, 0.000 0.375, 1.000 0.375, 1.000 0.500, 1.000 0.500, 0.000 0.500, 0.000 0.375, 0.000 0.250, 1.000 0.250, 1.000 0.750, 1.000 0.750, 0.000 0.750, 0.000 0.250, 0.375 0.250, 0.500 0.250, 0.500 0.750, 0.500 0.750, 0.000 0.250, 1.000 0.250, 1.000 0.750, 1.000 0.750, 0.500 0.250, 0.625 0.750, ' />
+				</IndexedFaceSet>
+				<Appearance >
+     			    <TextureTransform scale='1 1' translation='0 0'/> 
+			        <CommonSurfaceShader
+			            ambientFactor=".588 .588 .588"
+                        diffuseFactor="1. 1. 1."
+                        specularFactor="0.0 0.0 0.0"
+                        shininessFactor=".1"
+                        reflectionFactor="0 0 0"
+                        fresnelBlend="0"
+                        relativeIndexOfRefraction="1."
+                        environmentFactor="0 0 0"
+                        textureTransformEnabled='1'
+                        normalScale='-2 2 2'
+                        normalBias='1 -1 -1'
+                    >
+                      <ImageTexture containerField="ambientTexture" url="data/texturez.com/texturez_plaster_1307.png"/>
+                      <ImageTexture containerField="diffuseTexture" url="data/texturez.com/texturez_plaster_1307.png"/>
+                      <ImageTexture containerField="specularTexture" url="data/texturez.com/texturez_plaster_1307.png"/>
+                      <ImageTexture containerField="normalTexture" url="data/texturez.com/texturez_plaster_1307_nrm.png"/>
+                    </CommonSurfaceShader>
+				</Appearance>
+			</Shape>
+    </Transform>
+ 
+    <Transform translation='-3 2 -1'>
+    <Group>
+          <Transform translation='0 0 0' scale='.9 .9 .9'>
+			<Shape >
+
+				<Sphere DEF='Geo' resolution='2'/>
+				<Appearance >
+     			    <TextureTransform scale='2 1' translation='.125 0'/> 
+			        <CommonSurfaceShader
+			            ambientFactor=".588 .588 .588"
+                        diffuseFactor=".588 .588 .588"
+                        specularFactor=".75 .75 .75"
+                        shininessFactor=".02"
+                        reflectionFactor="0 0 0"
+                        fresnelBlend="0"
+                        relativeIndexOfRefraction="1."
+                        environmentFactor="0 0 0"
+                        textureTransformEnabled='1'
+                        normalScale='-2 2 2'
+                        normalBias='1 -1 -1'
+                    >
+                      <ImageTexture containerField="ambientTexture" url="data/texturez.com/texturez_rust_930.png"/>
+                      <ImageTexture containerField="diffuseTexture" url="data/texturez.com/texturez_rust_930.png"/>
+                      <ImageTexture containerField="specularTexture" url="data/texturez.com/texturez_rust_930_spec.png"/>
+                      <ImageTexture containerField="normalTexture" url="data/texturez.com/texturez_rust_930_nrm.png"/>
+                    </CommonSurfaceShader>
+
+				</Appearance>
+			</Shape>
+          </Transform>
+          <Transform translation='2 0 0' scale='.9 .9 .9'>
+			<Shape >
+				<Geometry USE='Geo'/>
+				<Appearance >
+     			    <TextureTransform scale='2 1' translation='0.25 0'/> 
+			        <CommonSurfaceShader
+			            ambientFactor=".588 .588 .588"
+                        diffuseFactor=".588 .588 .588"
+                        specularFactor="0.1 0.1 0.1"
+                        shininessFactor=".01"
+                        reflectionFactor="0 0 0"
+                        fresnelBlend="0"
+                        relativeIndexOfRefraction="1."
+                        environmentFactor="0 0 0"
+                        textureTransformEnabled='1'
+                        normalScale='2 -2 2'
+                        normalBias='-1 1 -1'
+                    >
+                      <ImageTexture containerField="ambientTexture" url="data/texturez.com/texturez_brick_1259.png"/>
+                      <ImageTexture containerField="diffuseTexture" url="data/texturez.com/texturez_brick_1259.png"/>
+                      <ImageTexture containerField="specularTexture" url="data/texturez.com/texturez_brick_1259.png"/>
+                      <ImageTexture containerField="normalTexture" url="data/texturez.com/texturez_brick_1259_nrm.png"/>
+                    </CommonSurfaceShader>
+
+				</Appearance>
+			</Shape>
+          </Transform>
+          <Transform translation='4 0 0' scale='.9 .9 .9'>
+			<Shape >
+				<Geometry USE='Geo'/>
+				<Appearance >
+     			    <TextureTransform scale='2 1' translation='0.25 0'/> 
+			        <CommonSurfaceShader
+			            ambientFactor=".588 .588 .588"
+                        diffuseFactor=".588 .588 .588"
+                        specularFactor="0.8 0.8 0.8"
+                        shininessFactor=".05"
+                        reflectionFactor="0 0 0"
+                        fresnelBlend="0"
+                        relativeIndexOfRefraction="1."
+                        environmentFactor="0 0 0"
+                        textureTransformEnabled='1'
+                        normalScale='2 -2 2'
+                        normalBias='-1 1 -1'
+                    >
+                      <ImageTexture containerField="ambientTexture" url="data/texturez.com/texturez_metal_1536.png"/>
+                      <ImageTexture containerField="diffuseTexture" url="data/texturez.com/texturez_metal_1536.png"/>
+                      <ImageTexture containerField="specularTexture" url="data/texturez.com/texturez_metal_1536.png"/>
+                      <ImageTexture containerField="normalTexture" url="data/texturez.com/texturez_metal_1536_nrm.png"/>
+                    </CommonSurfaceShader>
+
+				</Appearance>
+			</Shape>
+          </Transform>
+          <Transform translation='6 0 0' scale='.9 .9 .9'>
+			<Shape >
+				<Geometry USE='Geo'/>
+				<Appearance >
+     			    <TextureTransform scale='2 1' translation='0.125 0'/> 
+			        <CommonSurfaceShader
+			            ambientFactor=".588 .588 .588"
+                        diffuseFactor=".588 .588 .588"
+                        specularFactor="0.0 0.0 0.0"
+                        shininessFactor=".01"
+                        reflectionFactor="0 0 0"
+                        fresnelBlend="0"
+                        relativeIndexOfRefraction="1."
+                        environmentFactor="0 0 0"
+                        textureTransformEnabled='1'
+                        normalScale='2 -2 2'
+                        normalBias='-1 1 -1'
+                    >
+                      <ImageTexture containerField="ambientTexture" url="data/texturez.com/texturez_concrete_1501.png"/>
+                      <ImageTexture containerField="diffuseTexture" url="data/texturez.com/texturez_concrete_1501.png"/>
+                      <ImageTexture containerField="specularTexture" url="data/texturez.com/texturez_concrete_1501.png"/>
+                      <ImageTexture containerField="normalTexture" url="data/texturez.com/texturez_concrete_1501_nrm.png"/>
+                    </CommonSurfaceShader>
+
+				</Appearance>
+			</Shape>
+          </Transform>
+          
+    </Group>
+    </Transform>
+    
+    
+        <Transform translation='-3 1 1'>
+        <Group>
+          <Transform translation='0 0 0' scale='.9 .9 .9'>
+			<Shape >
+
+				<Sphere resolution='2'/>
+				<Appearance >
+     			    <TextureTransform scale='20 10' translation='0 0'/> 
+			        <CommonSurfaceShader
+			            ambientFactor=".588 .588 .588"
+                        diffuseFactor=".588 .588 .588"
+                        specularFactor="0.8 0.8 0.8"
+                        shininessFactor=".09"
+                        reflectionFactor="0 0 0"
+                        fresnelBlend="0"
+                        relativeIndexOfRefraction="1."
+                        environmentFactor="0 0 0"
+                        textureTransformEnabled='1'
+                        normalScale='2 2 2'
+                        normalBias='-1 -1 -1'
+                    >
+                      <ImageTexture containerField="ambientTexture" url="data/bonn/bonn_imp_ds.png"/>
+                      <ImageTexture containerField="diffuseTexture" url="data/bonn/bonn_imp_ds.png"/>
+                      <ImageTexture containerField="specularTexture" url="data/bonn/bonn_imp_spec.png"/>
+                      <ImageTexture containerField="normalTexture" url="data/bonn/bonn_imp_nh.png"/>
+                    </CommonSurfaceShader>
+
+				</Appearance>
+			</Shape>
+          </Transform>
+          <Transform translation='2 0 0' scale='.9 .9 .9'>
+			<Shape >
+				<Geometry USE='Geo'/>
+				<Appearance >
+     			    <TextureTransform scale='20 10' translation='0 0'/> 
+			        <CommonSurfaceShader
+			            ambientFactor=".588 .588 .588"
+                        diffuseFactor=".588 .588 .588"
+                        specularFactor="0.1 0.1 0.1"
+                        shininessFactor=".01"
+                        reflectionFactor="0 0 0"
+                        fresnelBlend="0"
+                        relativeIndexOfRefraction="1."
+                        environmentFactor="0 0 0"
+                        textureTransformEnabled='1'
+                        normalScale='2 2 2'
+                        normalBias='-1 -1 -1'
+                    >
+                      <ImageTexture containerField="ambientTexture" url="data/bonn/bonn_pulli_ds.png"/>
+                      <ImageTexture containerField="diffuseTexture" url="data/bonn/bonn_pulli_ds.png"/>
+                      <ImageTexture containerField="specularTexture" url="data/bonn/bonn_pulli_ds.png"/>
+                      <ImageTexture containerField="normalTexture" url="data/bonn/bonn_pulli_nh.png"/>
+                    </CommonSurfaceShader>
+
+				</Appearance>
+			</Shape>
+          </Transform>
+          <Transform translation='4 0 0' scale='.9 .9 .9'>
+			<Shape >
+				<Geometry USE='Geo'/>
+				<Appearance >
+     			    <TextureTransform scale='10 5' translation='0 0'/> 
+			        <CommonSurfaceShader
+			            ambientFactor=".588 .588 .588"
+                        diffuseFactor=".588 .588 .588"
+                        specularFactor="0.4 0.4 0.4"
+                        shininessFactor=".01"
+                        reflectionFactor="0 0 0"
+                        fresnelBlend="0"
+                        relativeIndexOfRefraction="1."
+                        environmentFactor="0 0 0"
+                        textureTransformEnabled='1'
+                        normalScale='2 -2 2'
+                        normalBias='-1 1 -1'
+                    >
+                      <ImageTexture containerField="ambientTexture" url="data/bonn/bonn_cord_ds.png"/>
+                      <ImageTexture containerField="diffuseTexture" url="data/bonn/bonn_cord_ds.png"/>
+                      <ImageTexture containerField="specularTexture" url="data/bonn/bonn_cord_ds.png"/>
+                      <ImageTexture containerField="normalTexture" url="data/bonn/bonn_cord_nh.png"/>
+                    </CommonSurfaceShader>
+
+				</Appearance>
+			</Shape>
+          </Transform>
+          <Transform translation='6 0 0' scale='.9 .9 .9'>
+			<Shape >
+				<Geometry USE='Geo'/>
+				<Appearance >
+     			    <TextureTransform scale='10 5' translation='0 0'/> 
+			        <CommonSurfaceShader
+			            ambientFactor=".588 .588 .588"
+                        diffuseFactor=".588 .588 .588"
+                        specularFactor="0.1 0.1 0.1"
+                        shininessFactor=".01"
+                        reflectionFactor="0 0 0"
+                        fresnelBlend="0"
+                        relativeIndexOfRefraction="1."
+                        environmentFactor="0 0 0"
+                        textureTransformEnabled='1'
+                        normalScale='2 2 2'
+                        normalBias='-1 -1 -1'
+                    >
+                      <ImageTexture containerField="ambientTexture" url="data/bonn/bonn_wool_ds.png"/>
+                      <ImageTexture containerField="diffuseTexture" url="data/bonn/bonn_wool_ds.png"/>
+                      <ImageTexture containerField="specularTexture" url="data/bonn/bonn_wool_ds.png"/>
+                      <ImageTexture containerField="normalTexture" url="data/bonn/bonn_wool_nh.png"/>
+                    </CommonSurfaceShader>
+
+				</Appearance>
+			</Shape>
+          </Transform>
+    </Group>
+    </Transform>
+  </Scene>
+</X3D>

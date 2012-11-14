@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<X3D profile='Immersive'>
+	<Scene>
+		<SolidBackground color='0 0 1'/>
+		<Group>
+			<Transform DEF="TRANS" translation="-2 2 0">
+				<Shape>
+					<Text string="Hello world!" />
+				</Shape>
+			</Transform>
+			<SpaceSensor DEF="TS"/>
+			<ROUTE fromNode="TS" fromField="translation_changed" toNode="TRANS" toField="translation"/>
+		</Group>
+        <Transform translation="-2 0 0">
+		<Shape>
+			<Box size='2 2 2'
+				useGeoCache='TRUE'
+				solid='TRUE'
+				lit='TRUE'
+				resolution='1'
+				multiResolutionLevel='1'
+				invalidateVolume='FALSE'
+				normalUpdateMode='nice'
+				cacheMode='auto'
+				optimizationMode='auto'
+				logFeature=''
+			 />
+			<Appearance>
+				<ImageTexture def='VTS' url="../img/test_image.jpg" logFeature=""/>
+			</Appearance>
+		 </Shape>
+		 </Transform>
+		 
+        <Transform translation="3 0 -1">
+			 <Shape>
+				 <Rectangle2D size='2 2'
+					solid='FALSE'
+					lit='TRUE'
+					resolution='1'
+					multiResolutionLevel='1'
+					invalidateVolume='FALSE'
+					normalUpdateMode='nice'
+					cacheMode='auto'
+					optimizationMode='auto'
+					logFeature=''
+				 />
+				<Appearance>
+					<Material/> 
+					<ImageTexture def='VTS' url="../img/test_image.jpg" logFeature=""/>
+				</Appearance>
+			 </Shape>
+				
+		 </Transform>
+	</Scene>
+</X3D>
